@@ -3,9 +3,9 @@
 const { query } = require('express');
 
 let options = {};
+options.tableName = 'Users'
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.schema;
-  options.tableName = 'Users'
 }
 
 /** @type {import('sequelize-cli').Migration} */
