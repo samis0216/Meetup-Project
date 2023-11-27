@@ -3,9 +3,9 @@
 const { query } = require('express');
 
 let options = {};
-options.tableName = 'Users'
+options.tableName = "Users";
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.schema;
+  options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 /** @type {import('sequelize-cli').Migration} */
@@ -20,7 +20,6 @@ module.exports = {
     await queryInterface.addColumn(options, 'firstName', {
       type: Sequelize.STRING
     })
-
     await queryInterface.addColumn(options, 'lastName', {
       type: Sequelize.STRING
     })
@@ -33,6 +32,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+    options.tableName = "Users";
     await queryInterface.removeColumn(options, 'firstName')
     await queryInterface.removeColumn(options, 'lastName')
   }

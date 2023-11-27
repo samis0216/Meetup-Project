@@ -1,10 +1,10 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-if (process.env.NODE_ENV == 'production') {
-  options.schema = process.env.schema;
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
@@ -25,7 +25,7 @@ module.exports = {
         unique: true
       },
       hashedPassword: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING.BINARY,
         allowNull: false
       },
       createdAt: {
@@ -40,8 +40,9 @@ module.exports = {
       }
     }, options);
   },
+
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Users';
-    await queryInterface.dropTable(options);
+    options.tableName = "Users";
+    return queryInterface.dropTable(options);
   }
 };
