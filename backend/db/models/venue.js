@@ -20,15 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'groups',
-        id: 'id'
+        key: 'id'
       }
     },
     address: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
-          args: false,
+        notNull: {
+          args: true,
           msg: 'Street address is required'
         }
       }
@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
-          args: false,
+        notNull: {
+          args: true,
           msg: 'City is required'
         }
       }
@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
-          args: false,
+        notNull: {
+          args: true,
           msg: 'State is required'
         }
       }
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.NUMERIC,
       allowNull: false,
       validate: {
-        isNumeric: {
+        notNull: {
           args: true,
           msg: 'Latitude is not valid'
         }
@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.NUMERIC,
       allowNull: false,
       validate: {
-        isNumeric: {
+        notNull: {
           args: true,
           msg: 'Longitude is not valid'
         }

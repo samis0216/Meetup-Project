@@ -16,15 +16,26 @@ module.exports = (sequelize, DataTypes) => {
   Membership.init({
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
     groupId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'groups',
+        key: 'id'
+      }
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isIn: [['pending', 'member']]
+      }
     }
   }, {
     sequelize,

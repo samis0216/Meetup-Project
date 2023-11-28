@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'groups',
-          id: 'id'
+          key: 'id'
         }
       },
       address: {

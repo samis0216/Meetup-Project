@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'Events',
-          id: 'id'
+          key: 'id'
         }
       },
       url: {

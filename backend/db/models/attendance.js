@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Events',
-        id: 'id'
+        key: 'id'
       }
     },
     userId: {
@@ -27,12 +27,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Users',
-        id: 'id'
+        key: 'id'
       }
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isIn: [['pending', 'attending', 'waitlisted']]
+      }
     }
   }, {
     sequelize,

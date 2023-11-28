@@ -11,14 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      group.belongsTo(models.User, {
+        foreignKey: 'organizerId'
+      })
       group.belongsToMany(models.User, {
-        through: models.Membership,
+        through: 'Memberships',
         foreignKey: 'groupId',
         otherKey: 'userId'
       })
 
       group.hasMany(models.GroupImage, {foreignKey: 'groupId'})
       group.hasMany(models.Venue, {foreignKey: 'groupId'})
+      group.hasMany(models.Event, {foreignKey: 'groupId'})
+
       }
 
   }
@@ -35,21 +40,30 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 60]
+        len: {
+          args: [1, 60],
+          msg: 'Name must be between 1 and 60 characters'
+        }
       }
     },
     about: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        len: [50, 300]
+        len: {
+          args: [50, 300],
+          msg: 'About must be at least 50 characters long'
+        }
       }
     },
     type: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['Online', 'In person']]
+        isIn: {
+          args: [['Online', 'In person']],
+          msg: 'Must be online or in person'
+        }
       }
     },
     private: {

@@ -20,9 +20,9 @@ module.exports = {
       {
         organizerId: 1,
         name: 'Lazer Tag Group',
-        about: 'Come play lazer tag with Demo User!',
-        type: 'Entertainment',
-        private: false,
+        about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A diam maecenas sed enim ut sem viverra. Magna fringilla urna porttitor rhoncus.',
+        type: 'In person',
+        private: true,
         city: 'Irvine',
         state: 'California'
 
@@ -30,9 +30,9 @@ module.exports = {
       {
         organizerId: 1,
         name: 'Painting Group',
-        about: 'Come paint 19th century works with Demo User!',
-        type: 'Art',
-        private: false,
+        about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A diam maecenas sed enim ut sem viverra. Magna fringilla urna porttitor rhoncus.',
+        type: 'Online',
+        private: true,
         city: 'Irvine',
         state: 'California'
 
@@ -40,14 +40,14 @@ module.exports = {
       {
         organizerId: 2,
         name: 'Coding Group',
-        about: 'Come learn C++ with user2!',
-        type: 'Education',
-        private: false,
+        about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A diam maecenas sed enim ut sem viverra. Magna fringilla urna porttitor rhoncus.',
+        type: 'Online',
+        private: true,
         city: 'Irvine',
         state: 'California'
 
       }
-    ])
+    ], { validate: true })
 
 
   },

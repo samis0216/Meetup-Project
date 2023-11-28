@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'Events',
-          id: 'id'
+          key: 'id'
         }
       },
       userId: {
@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'Users',
-          id: 'id'
+          key: 'id'
         }
       },
       status: {

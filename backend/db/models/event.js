@@ -38,10 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Venues',
-        id: 'id'
-      },
-      validate: {
-        msg: 'Venue does not exist.'
+        key: 'id'
       }
     },
     groupId: {
@@ -49,15 +46,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'groups',
-        id: 'id'
+        key: 'id'
       }
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        min: {
-          args: 5,
+        len: {
+          args: [5, 40],
           msg: 'Name must be at least 5 characters'
         }
       }
@@ -106,7 +103,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isDate: true,
         isAfter: {
           args: '11-28-2023',
           msg: 'Start date must be in the future'
@@ -117,10 +113,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isDate: true,
-        isAfter: {
-          args: this.startDate,
-          msg: 'End date is less than start date'
+        isAfterOtherDate(value) {
+          if (new Date(value) <= new Date(this.startDate)) {
+            throw new Error('End date must be after start date');
+          }
         }
       }
     }

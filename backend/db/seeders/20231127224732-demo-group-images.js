@@ -32,7 +32,7 @@ module.exports = {
         url: "random url3",
         preview: true
       }
-    ])
+    ], { validate: true })
 
   },
 
