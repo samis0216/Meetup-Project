@@ -17,27 +17,61 @@ module.exports = (sequelize, DataTypes) => {
   Venue.init({
     groupId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'groups',
+        id: 'id'
+      }
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNull: {
+          args: false,
+          msg: 'Street address is required'
+        }
+      }
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNull: {
+          args: false,
+          msg: 'City is required'
+        }
+      }
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNull: {
+          args: false,
+          msg: 'State is required'
+        }
+      }
     },
     lat: {
       type: DataTypes.NUMERIC,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          args: true,
+          msg: 'Latitude is not valid'
+        }
+      }
     },
     lng: {
       type: DataTypes.NUMERIC,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          args: true,
+          msg: 'Longitude is not valid'
+        }
+      }
     }
   }, {
     sequelize,

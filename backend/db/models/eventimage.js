@@ -11,12 +11,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      EventImage.belongsTo(models.Event,
+        {
+          foreignKey: 'eventId'
+        }
+        )
     }
   }
   EventImage.init({
-    eventId: DataTypes.INTEGER,
-    url: DataTypes.STRING,
-    preview: DataTypes.BOOLEAN
+    eventId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Events',
+        id: 'id'
+      }
+    },
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isUrl: {
+          args: true,
+          msg: 'Not a valid URL'
+        }
+      }
+    },
+    preview: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'EventImage',
