@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'userId'
       })
 
-      group.hasMany(models.GroupImage, {foreignKey: 'groupId'})
-      group.hasMany(models.Venue, {foreignKey: 'groupId'})
-      group.hasMany(models.Event, {foreignKey: 'groupId'})
+      group.hasMany(models.GroupImage, {foreignKey: 'groupId', onDelete: 'CASCADE'})
+      group.hasMany(models.Venue, {foreignKey: 'groupId', onDelete: 'CASCADE'})
+      group.hasMany(models.Event, {foreignKey: 'groupId', onDelete: 'CASCADE'})
 
       }
 
@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Users',
-        key: 'id'
+        key: 'id',
+        onDelete: 'CASCADE'
       }
     },
     name: {

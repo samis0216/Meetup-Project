@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Events',
-        key: 'id'
+        key: 'id',
       }
     },
     userId: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Users',
-        key: 'id'
+        key: 'id',
       }
     },
     status: {

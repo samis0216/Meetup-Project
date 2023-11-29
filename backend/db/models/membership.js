@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id'
+
       }
     },
     groupId: {
