@@ -1,9 +1,10 @@
 const express = require('express')
 const Sequelize = require('sequelize')
 const { check, validationResult} = require('express-validator')
-const { group, User, GroupImage, Venue } = require('../../db/models')
+const { group, User, GroupImage, Venue, Event } = require('../../db/models')
 const { handleValidationErrors } = require('../../utils/validation')
 const { requireAuth } = require('../../utils/auth')
+const eventsRouter = require('./events')
 
 
 const router = express.Router()
@@ -11,6 +12,65 @@ const router = express.Router()
 // const checkOwner = (userId, group) => {
 //     return (userId !== group.organizerId)
 // }
+const validateEventPost = [
+    check('venueId')
+        .exists()
+        .isInt()
+        .withMessage('Venue does not exist'),
+    check('name')
+        .exists()
+        .isLength({ min: 5 })
+        .withMessage('Name must be 60 characters or less'),
+    check('type')
+        .exists()
+        .isIn(['Online', 'In person'])
+        .withMessage('Type must be "Online" or "In person"'),
+    check('capacity')
+        .exists()
+        .isInt({min: 1})
+        .withMessage('Capacity must be an integer'),
+    check('price')
+        .exists()
+        .isFloat()
+        .custom((value) => {
+            value = value.toFixed(2);
+            console.log(value);
+            if(value.toString().split('.')[1].length > 2) {
+                throw new Error("Price is invalid")
+            }
+            return true
+        })
+        .withMessage('Price is invalid'),
+    check('description')
+        .exists()
+        .isAlpha('en-US', {ignore: [' ', '-', '!', '.', '?', "'", '"', '(', ')']})
+        .withMessage('Description is required'),
+    check('startDate')
+        .exists()
+        .custom(value=>{
+            let enteredDate=new Date(value);
+            let todaysDate=new Date();
+            if(enteredDate <= todaysDate){
+                throw new Error("Start date must be in the future");
+            }
+            return true;
+        })
+        .withMessage('Start date must be in the future'),
+    check('endDate')
+        .exists()
+        .custom((endDate, { req }) => {
+
+            let enteredDate=new Date(endDate);
+            let startDate=new Date(req.body.startDate);
+
+            if (enteredDate.getTime() < startDate.getTime()) {
+                throw new Error('End date is less than start date');
+            }
+            return true
+        })
+        .withMessage('End date is less than start date'),
+    handleValidationErrors
+    ]
 
 const validateGroup = [
     check('name')
@@ -26,7 +86,7 @@ const validateGroup = [
         .isIn(['In person', 'Online'])
         .withMessage("Type must be 'Online' or 'In person'"),
     check('private')
-        .exists({checkFalsy: true})
+        .exists()
         .isBoolean()
         .withMessage("Private must be a boolean"),
     check('city')
@@ -44,7 +104,7 @@ const validateImage = [
         .isURL()
         .withMessage('Must provide a valid URL'),
     check('preview')
-        .exists({checkFalsy: true})
+        .exists()
         .isBoolean()
         .withMessage('Preview must be a boolean'),
     handleValidationErrors
@@ -104,8 +164,7 @@ router.get('/', async (req, res) => {
 
 // GET GROUP ASSOCIATED WITH CURRENT USER
 router.get('/current', requireAuth, async (req, res) => {
-    // const { user } = req.user
-    let user = {id: 1}
+    const { user } = req
     const allGroups = await group.findAll({
         where: {
             organizerId: user.id
@@ -135,6 +194,7 @@ router.get('/current', requireAuth, async (req, res) => {
         },
         group: ['Group.id']
     })
+    res.json(allGroups)
 })
 
 // GET GROUP BY ID
@@ -146,36 +206,36 @@ router.get('/:groupId', async (req, res) => {
         }
     })
     const userInfo = await groupInfo.getUser({
-        attributes: []
+        include: [
+            {
+                model: User,
+                as: 'Users',
+                attributes: [],
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: GroupImage,
+                attributes: ['id', 'url', 'preview'],
+            },
+            {
+                model: Venue,
+                as: 'Venues',
+                attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+            }
+        ],
+        where: {
+            id: id
+        },
+        attributes: {
+            include: [
+                [Sequelize.fn('COUNT', Sequelize.col('Users.id')), 'numMembers'],
+            ]
+        },
+        group: ['Group.id']
     })
-        // include: [
-        //     {
-        //         model: User,
-        //         as: 'Users',
-        //         attributes: [],
-        //         through: {
-        //             attributes: []
-        //         }
-        //     },
-        //     {
-        //         model: GroupImage,
-        //         attributes: ['id', 'url', 'preview'],
-        //     },
-        //     {
-        //         model: Venue,
-        //         as: 'Venues',
-        //         attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
-        //     }
-        // ],
-        // where: {
-        //     id: id
-        // },
-        // attributes: {
-        //     include: [
-        //         [Sequelize.fn('COUNT', Sequelize.col('Users.id')), 'numMembers'],
-        //     ]
-        // },
-        // group: ['Group.id']
+
     if (groupInfo.length) res.json(groupInfo)
     else {
         res.status(404)
@@ -212,6 +272,7 @@ router.post('/', validateGroup, async (req, res) => {
 router.post('/:groupId/images', requireAuth, validateImage, async (req, res) => {
     const { user } = req;
     const id = user.id;
+    console.log(id)
     const groupId = req.params.groupId;
     const { url , preview } = req.body;
     const groupDetails = await group.findByPk(groupId)
@@ -287,7 +348,7 @@ router.delete('/:groupId', async (req, res) => {
             id: groupId
         }
     })
-    if(!toDelete) {
+    if (!toDelete) {
         res.json({
             message: "Group couldn't be found"
         })
@@ -354,6 +415,54 @@ router.post('/:groupId/venues', validateVenue, async (req, res) => {
             }
         }))
     }
+})
+
+// GET EVENTS BY GROUP ID
+router.get('/:groupId/events', async (req, res)=> {
+    const groupdId = req.params.groupId
+    const foundGroup = !(await group.findByPk(groupdId)) ? res.json({ message: "Group couldn't be found"}) : res.status(200)
+    const allEvents = await Event.findAll({
+        where: {
+            groupId: groupdId
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    for (let event of allEvents) {
+        event.dataValues.Group = await event.getGroup({
+            attributes: ['id', 'name', 'city', 'state']
+        })
+
+        event.dataValues.Venue = await event.getVenue({
+            attributes: ['id', 'city', 'state']
+        })
+
+    }
+
+    res.json({
+        Events: allEvents
+    })
+})
+
+// CREATE EVENT FOR GROUP BY GROUP ID
+router.post('/:groupId/events', validateEvent, async (req, res) => {
+    const { user } = req
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+    const groupdId = req.params.groupId
+    const foundGroup = !(await group.findByPk(groupdId)) ? res.json({ message: "Group couldn't be found"}) : res.status(200)
+    const newEvent = await Event.create({
+        groupId: groupdId,
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+    })
 })
 
 module.exports = router

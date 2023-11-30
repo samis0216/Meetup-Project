@@ -14,15 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       group.belongsTo(models.User, {
         foreignKey: 'organizerId'
       })
-      group.belongsToMany(models.User, {
-        through: 'Memberships',
-        foreignKey: 'groupId',
-        otherKey: 'userId'
-      })
 
       group.hasMany(models.GroupImage, {foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true})
       group.hasMany(models.Venue, {foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true})
       group.hasMany(models.Event, {foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true})
+
+      group.belongsToMany(models.User, {
+        through: 'Memberships',
+        foreignKey: 'groupId',
+        otherKey: 'userId',
+      })
+
 
       }
 
@@ -34,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id',
-        onDelete: 'CASCADE'
       }
     },
     name: {

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const event = require('./event');
 module.exports = (sequelize, DataTypes) => {
   class Venue extends Model {
     /**
@@ -11,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Venue.belongsTo(models.group, {foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true})
+      Venue.belongsTo(models.group, {foreignKey: 'groupId'})
+
+      Venue.hasMany(models.Event, {foreignKey: 'venueId', onDelete: 'CASCADE', hooks: true})
 
     }
   }
@@ -78,6 +81,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Venue',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    }
   });
   return Venue;
 };

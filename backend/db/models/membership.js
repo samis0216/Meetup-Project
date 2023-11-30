@@ -35,12 +35,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['pending', 'member']]
+        isIn: [['pending', 'member', 'co-host']]
       }
     }
   }, {
     sequelize,
     modelName: 'Membership',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'userId', 'groupId']
+      }
+    }
   });
   return Membership;
 };
