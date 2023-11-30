@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.belongsToMany(models.group, {
+        as: 'Organizations',
         through: 'Membership',
         foreignKey: 'userId',
         otherKey: 'groupId',
@@ -21,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       })
 
-      User.hasMany(models.group, {foreignKey: 'organizerId', onDelete: "CASCADE", hooks: true})
+      User.hasMany(models.group, {
+        foreignKey: 'organizerId',
+        onDelete: "CASCADE",
+        hooks: true})
     }
   };
 
