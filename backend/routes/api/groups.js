@@ -5,6 +5,7 @@ const { group, User, GroupImage, Venue } = require('../../db/models')
 const { handleValidationErrors } = require('../../utils/validation')
 const { requireAuth } = require('../../utils/auth')
 
+
 const router = express.Router()
 
 // const checkOwner = (userId, group) => {
@@ -49,6 +50,28 @@ const validateImage = [
     handleValidationErrors
 ]
 
+const validateVenue = [
+    check('address')
+        .exists({checkFalsy: true})
+        .withMessage('Street address is required'),
+    check('city')
+        .exists({checkFalsy: true})
+        .withMessage('City is required'),
+    check('state')
+        .exists({checkFalsy: true})
+        .withMessage('State is required'),
+    check('lat')
+        .exists({checkFalsy: true})
+        .isNumeric()
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({checkFalsy: true})
+        .isNumeric()
+        .withMessage('Longitude is not valid'),
+    handleValidationErrors
+]
+
+// GET ALL GROUPS
 router.get('/', async (req, res) => {
     const groups = await group.findAll({
         include: [
@@ -79,6 +102,7 @@ router.get('/', async (req, res) => {
     res.json(groups)
 })
 
+// GET GROUP ASSOCIATED WITH CURRENT USER
 router.get('/current', requireAuth, async (req, res) => {
     // const { user } = req.user
     let user = {id: 1}
@@ -113,6 +137,7 @@ router.get('/current', requireAuth, async (req, res) => {
     })
 })
 
+// GET GROUP BY ID
 router.get('/:groupId', async (req, res) => {
     const id = req.params.groupId
     const groupInfo = await group.findAll({
@@ -160,6 +185,7 @@ router.get('/:groupId', async (req, res) => {
     }
 })
 
+// CREATE NEW GROUP
 router.post('/', validateGroup, async (req, res) => {
     const { user } = req
     const { name, about, type, private, city, state } = req.body
@@ -182,6 +208,7 @@ router.post('/', validateGroup, async (req, res) => {
     res.json(info)
 })
 
+// ADD NEW IMAGE TO GROUP
 router.post('/:groupId/images', requireAuth, validateImage, async (req, res) => {
     const { user } = req;
     const id = user.id;
@@ -214,6 +241,7 @@ router.post('/:groupId/images', requireAuth, validateImage, async (req, res) => 
     res.json(img)
 })
 
+// UPDATE GROUP BY ID
 router.put('/:groupId', validateGroup, async (req, res) => {
     // const { user } = req;
     user = {
@@ -251,6 +279,7 @@ router.put('/:groupId', validateGroup, async (req, res) => {
 
 })
 
+// DELETE GROUP
 router.delete('/:groupId', async (req, res) => {
     const groupId = req.params.groupId
     const toDelete = await group.findOne({
@@ -269,6 +298,62 @@ router.delete('/:groupId', async (req, res) => {
         })
     }
 
+})
+
+// GET ALL VENUES BY GROUP ID
+router.get('/:groupId/venues', async (req, res) => {
+    const groupId = req.params.groupId
+    const foundGroup = await group.findByPk(groupId)
+    const groupVenues = await Venue.findAll({
+        where: {
+            groupId: groupId
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    if (!foundGroup)  {
+        res.json({
+            message: "Group couldn't be found"
+        })
+    } else if (!groupVenues.length) {
+        res.json({
+            message: "Group has no venues"
+        })
+    } else {
+        res.json(groupVenues)
+    }
+})
+
+// CREATE NEW VENUE BY GROUP ID
+router.post('/:groupId/venues', validateVenue, async (req, res) => {
+    const groupId = req.params.groupId
+    const { address, city, state, lat, lng } = req.body
+    const groupToAdd = await group.findByPk(groupId);
+    if (!groupToAdd) {
+        res.json({
+            message: "Group couldn't be found"
+        })
+    } else {
+        const newVenue = await Venue.create({
+            groupId,
+            address,
+            city,
+            state,
+            lat,
+            lng
+        })
+
+        res.json(await Venue.findOne({
+            where: {
+                address: address
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        }))
+    }
 })
 
 module.exports = router
