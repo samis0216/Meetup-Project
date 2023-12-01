@@ -67,16 +67,81 @@ const validateEvent = [
     handleValidationErrors
 ]
 
-router.get('/', async (req, res) => {
-    const allEvents = await Event.findAll({
-        include: [{
-            model: group,
-            attributes: ['id', 'name', 'city', 'state']
-        }, {
-            model: Venue,
-            attributes: ['id', 'city', 'state']
-        }],
-    })
+const validateQuery = [
+    query('page')
+        .default('1')
+        .isInt()
+        .custom((page) => {
+            if (parseInt(page) < 1) {
+                throw new Error('Page must be greater than or equal to 1')
+            } else {
+                return true
+            }
+        })
+        .withMessage("Page must be greater than or equal to 1"),
+    query('size')
+        .default('20')
+        .isInt()
+        .custom((size) => {
+            if (size < 1) {
+                throw new Error('Page must be greater than or equal to 1')
+            } else {
+                return true
+            }
+        })
+        .withMessage("Size must be greater than or equal to 1"),
+    query('name')
+        .optional()
+        .isString()
+        .withMessage("Name must be a string"),
+    query('type')
+        .optional()
+        .isString()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    query('startDate')
+        .optional()
+        .custom((date) => {
+            date = date.slice(1, date.length - 1)
+            date = new Date(date);
+            if (!date.getTime()) {
+                throw new Error('Start date must be a valid datetime');
+            } else return true
+        })
+        .withMessage('Start date must be a valid datetime'),
+    handleValidationErrors
+]
+
+router.get('/', validateQuery, async (req, res) => {
+    const pagination = {};
+    const { page, size, name, type, startDate } = req.query;
+    if(page > 10) page = 10
+    if(size > 20) size = 20
+    pagination.include = [{
+        model: group,
+        attributes: ['id', 'name', 'city', 'state']
+    }, {
+        model: Venue,
+        attributes: ['id', 'city', 'state']
+    }]
+    const offset = (page - 1) * size;
+    const limit = size;
+    pagination.offset = offset;
+    pagination.limit = limit;
+    if(name) {
+        pagination.where = {};
+        name = name.slice(1, name.length - 1)
+        pagination.where.name = name;
+    }
+    if(type) {
+        type = type.slice(1, type.length - 1)
+        pagination.where.type = type;
+    }
+    if(startDate) {
+        startDate = startDate.slice(1, startDate.length - 1)
+        pagination.where.startDate = new Date(startDate);
+    }
+    const allEvents = await Event.findAll(pagination)
     let Events = []
     for (let event of allEvents) {
         let attendees = await event.getUsers();
