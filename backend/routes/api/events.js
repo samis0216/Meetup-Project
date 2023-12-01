@@ -8,25 +8,26 @@ const event = require('../../db/models/event')
 
 const router = express.Router()
 
-const validateEventPut = [
+const validateEvent = [
     check('venueId')
-        .optional()
+        .exists()
         .isInt()
         .withMessage('Venue does not exist'),
     check('name')
-        .optional()
+        .exists()
+        .isString()
         .isLength({ min: 5 })
         .withMessage('Name must be 60 characters or less'),
     check('type')
-        .optional()
+        .exists()
         .isIn(['Online', 'In person'])
         .withMessage('Type must be "Online" or "In person"'),
     check('capacity')
-        .optional()
+        .exists()
         .isInt({ min: 1 })
         .withMessage('Capacity must be an integer'),
     check('price')
-        .optional()
+        .exists()
         .isFloat()
         .custom((value) => {
             value = value.toFixed(2);
@@ -38,11 +39,11 @@ const validateEventPut = [
         })
         .withMessage('Price is invalid'),
     check('description')
-        .optional()
-        .isAlpha('en-US', { ignore: [' ', '-', '!', '.', '?', "'", '"', '(', ')'] })
+        .exists()
+        .isString()
         .withMessage('Description is required'),
     check('startDate')
-        .optional()
+        .exists()
         .custom(value => {
             let enteredDate = new Date(value);
             let todaysDate = new Date();
@@ -53,12 +54,10 @@ const validateEventPut = [
         })
         .withMessage('Start date must be in the future'),
     check('endDate')
-        .optional()
+        .exists()
         .custom((endDate, { req }) => {
-
             let enteredDate = new Date(endDate);
             let startDate = new Date(req.body.startDate);
-
             if (enteredDate.getTime() < startDate.getTime()) {
                 throw new Error('End date is less than start date');
             }
@@ -147,7 +146,7 @@ router.post('/:eventId/images', requireAuth, authEventId, async (req, res) => {
     }))
 })
 
-router.put('/:eventId', requireAuth, authEventId, authVenueId, validateEventPut, authEvent, async (req, res) => {
+router.put('/:eventId', requireAuth, authEventId, authVenueId, validateEvent, authEvent, async (req, res) => {
     const { user } = req;
     const eventId = parseInt(req.params.eventId);
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body

@@ -10,20 +10,23 @@ const router = express.Router()
 const validateVenue = [
     check('address')
         .exists({checkFalsy: true})
+        .isString()
         .withMessage('Street address is required'),
     check('city')
         .exists({checkFalsy: true})
+        .isString()
         .withMessage('City is required'),
     check('state')
         .exists({checkFalsy: true})
+        .isString()
         .withMessage('State is required'),
     check('lat')
         .exists({checkFalsy: true})
-        .isNumeric()
+        .isNumeric({min: -180, max: 180})
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({checkFalsy: true})
-        .isNumeric()
+        .isNumeric({min: -180, max: 180})
         .withMessage('Longitude is not valid'),
     handleValidationErrors
 ]
