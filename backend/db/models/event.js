@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Venue,
         {
           foreignKey: 'venueId',
+          onDelete: 'SET NULL'
         }
       )
     }
@@ -66,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: {
-          args: [5, 40],
+          args: [5, 60],
           msg: 'Name must be at least 5 characters'
         }
       }
@@ -102,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NUMERIC,
       allowNull: false,
       validate: {
         isNumeric: {
@@ -135,6 +136,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    }
   });
   return Event;
 };

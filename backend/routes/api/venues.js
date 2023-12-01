@@ -3,7 +3,7 @@ const Sequelize = require('sequelize')
 const { check, validationResult} = require('express-validator')
 const { group, User, GroupImage, Venue } = require('../../db/models')
 const { handleValidationErrors } = require('../../utils/validation')
-const { requireAuth } = require('../../utils/auth')
+const { requireAuth, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId, strictAuthGroup } = require('../../utils/auth')
 
 const router = express.Router()
 
@@ -29,7 +29,7 @@ const validateVenue = [
 ]
 
 // UPDATE VENUE BY ID
-router.put('/:venueId', validateVenue, async (req, res) => {
+router.put('/:venueId', requireAuth, authVenueId, authVenue, validateVenue, async (req, res) => {
     const venueId = req.params.venueId;
     const { groupId, address, city, state, lat, lng } = req.body;
     const foundVenue = await Venue.findByPk(venueId, {
@@ -37,7 +37,6 @@ router.put('/:venueId', validateVenue, async (req, res) => {
             exclude: ['createdAt', 'updatedAt']
         }
     });
-
     if(!foundVenue) {
         res.json({
             message: "Venue couldn't be found"
@@ -49,7 +48,6 @@ router.put('/:venueId', validateVenue, async (req, res) => {
             state,
             lat,
             lng
-
         })
         res.json(updated)
         // res.json(await Venue.findByPk(venueId, {
@@ -57,7 +55,7 @@ router.put('/:venueId', validateVenue, async (req, res) => {
         //         exclude: ['createdAt', 'updatedAt']
         //     }
         // }))
-
     }
 })
+
 module.exports = router

@@ -19,7 +19,8 @@ module.exports = {
         references: {
           model: 'groups',
           key: 'id'
-        }
+        },
+        onDelete: "CASCADE"
       },
       address: {
         type: Sequelize.STRING,

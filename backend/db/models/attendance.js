@@ -35,12 +35,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['pending', 'attending', 'waitlisted']]
+        isIn: [['pending', 'attending', 'waitlist']]
       }
     }
   }, {
     sequelize,
     modelName: 'Attendance',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'userId', 'eventId']
+      }
+    }
   });
   return Attendance;
 };

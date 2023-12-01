@@ -6,7 +6,7 @@ const sessionRouter = require('./session.js');
 const groupsRouter = require('./groups.js');
 const venuesRouter = require('./venues.js')
 const eventsRouter = require('./events.js')
-const user = require('../../db/models/user.js');
+const membershipRouter = require('./memberships.js')
 
 router.use(restoreUser);
 

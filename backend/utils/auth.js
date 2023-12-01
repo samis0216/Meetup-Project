@@ -65,7 +65,33 @@ const requireAuth = function (req, _res, next) {
     return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+const strictAuthGroup = async function (req, res, next) {
+    const { user } = req;
+    let Group;
+    let status;
+    const groupId = parseInt(req.params.groupId);
+    if (groupId) {
+        Group = await group.findByPk(groupId);
+        status = await Membership.findOne({
+            where: {
+                userId: user.id,
+                groupId: groupId
+            }
+        })
+    }
+    if (Group) {
+        if (user.id == Group.organizerId) {
+            return next();
+        }
+        else {
+            const err = new Error('Forbidden');
+            err.title = 'Require proper authorization'
+            err.status = 403;
+            err.errors = { message: 'Require proper authorization' };
+            return next(err);
+        }
+    }
+}
 
 const authGroup = async (req, res, next) => {
     const { user } = req;
@@ -224,4 +250,4 @@ const authEventId = async function (req, res, next) {
     }
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId };
+module.exports = { setTokenCookie, restoreUser, requireAuth, strictAuthGroup, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId };

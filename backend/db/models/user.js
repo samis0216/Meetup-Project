@@ -18,8 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         through: 'Attendance',
         foreignKey: 'userId',
         otherKey: 'eventId',
-        onDelete: "CASCADE",
-        hooks: true
       })
 
       User.hasMany(models.group, {
