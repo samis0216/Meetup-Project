@@ -1,6 +1,6 @@
 const express = require('express')
 const Sequelize = require('sequelize')
-const { check, validationResult } = require('express-validator')
+const { check, query, validationResult } = require('express-validator')
 const { Event, group, User, GroupImage, Venue, EventImage, Membership, Attendance } = require('../../db/models')
 const { handleValidationErrors } = require('../../utils/validation')
 const { setTokenCookie, restoreUser, requireAuth, strictAuthGroup, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId } = require('../../utils/auth')
@@ -106,7 +106,7 @@ const validateQuery = [
             date = new Date(date);
             if (!date.getTime()) {
                 throw new Error('Start date must be a valid datetime');
-            } else return true
+            } return true
         })
         .withMessage('Start date must be a valid datetime'),
     handleValidationErrors
@@ -382,8 +382,7 @@ router.put('/:eventId/attendance', requireAuth, authEventId, authEvent, async (r
         err.errors = { message: 'Require proper authorization' };
         return next(err);
     }
-    await attendance.save();
-    res.json({
+    return res.json({
         id: attendance.id,
         groupId: groupId,
         memberId: attendance.userId,
@@ -397,7 +396,7 @@ router.delete('/:eventId/attendance', requireAuth, authEventId, async (req, res,
     const eventId = parseInt(req.params.eventId);
     let event = await Event.findByPk(eventId, {
         include: {
-            model: 'group'
+            model: group
         }
     })
     let organizerId = event.group.organizerId;
@@ -410,13 +409,13 @@ router.delete('/:eventId/attendance', requireAuth, authEventId, async (req, res,
     if (!attendance) {
         res.status(404);
         return res.json({
-            "message": "Attendance does not exist for this user"
+            message: "Attendance does not exist for this user"
         });
     }
     if (userId == user.id || user.id == organizerId) {
         await attendance.destroy();
         return res.json({
-            "message": "Successfully deleted attendance from event"
+            message: "Successfully deleted attendance from event"
         })
     } else {
         const err = new Error('Forbidden');

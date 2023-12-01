@@ -67,9 +67,9 @@ const requireAuth = function (req, _res, next) {
 
 const strictAuthGroup = async function (req, res, next) {
     const { user } = req;
-    let Group;
-    let status;
     const groupId = parseInt(req.params.groupId);
+    let Group;
+    let status
     if (groupId) {
         Group = await group.findByPk(groupId);
         status = await Membership.findOne({
@@ -96,19 +96,20 @@ const strictAuthGroup = async function (req, res, next) {
 const authGroup = async (req, res, next) => {
     const { user } = req;
     const groupId = parseInt(req.params.groupId)
-    let Group;
+    let foundGroup;
     let status;
     if (groupId) {
-        Group = await group.findByPk(groupId)
+        foundGroup = await group.findByPk(groupId)
         status = await Membership.findOne({
             where: {
                 userId: user.id,
-                groupId: groupId
+                groupId: groupId,
+                status: 'co-host'
             }
         })
     }
-    if (Group) {
-        if (user.id == Group.organizerId) {
+    if (foundGroup) {
+        if (user.id == foundGroup.organizerId) {
             return next();
         }
         else if (status) {
@@ -126,14 +127,44 @@ const authGroup = async (req, res, next) => {
     }
 }
 
-const authVenue = async (req, res) => {
+const authGroupImage = async (req, res, next) => {
+    const { user } = req;
+    const imageId = req.params.imageId;
+    let image = await GroupImage.scope('specific').findByPk(imageId)
+    if (!image) {
+        res.status(404)
+        return res.json({
+            message: "Group image couldn't be found"
+        })
+    }
+    let groupId = image.groupId;
+    let foundGroup = await group.findByPk(groupId);
+    let cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: groupId,
+            status: 'co-host'
+        }
+    })
+    if (cohost || foundGroup.organizerId == user.id) {
+        return next();
+    } else {
+        const err = new Error('Forbidden');
+        err.title = 'Require proper authorization'
+        err.status = 403;
+        err.errors = { message: 'Require proper authorization' };
+        return next(err);
+    }
+}
+
+const authVenue = async (req, res, next) => {
     const { user } = req;
     const venueId = parseInt(req.params.venueId);
     let venue;
     let venueGroup;
     if (venueId) {
         venue = await Venue.findByPk(venueId);
-        venueGroup = await Group.findByPk(venue.groupId);
+        venueGroup = await group.findByPk(venue.groupId);
     }
     if (venueGroup) {
         if (venueGroup.organizerId === user.id) {
@@ -175,15 +206,15 @@ const authEvent = async function (req, res, next) {
             }
         }
         else if (req.method === 'PUT' || req.method === 'DELETE') {
-            let group = await event.getGroup();
+            let foundGroup = await event.getGroup();
             let memberships = await Membership.findOne({
                 where: {
                     userId: user.id,
-                    groupId: group.id,
+                    groupId: foundGroup.id,
                     status: 'co-host'
                 }
             })
-            if (memberships || group.organizerId === user.id) {
+            if (memberships || foundGroup.organizerId === user.id) {
                 return next();
             } else {
                 const err = new Error('Forbidden');
@@ -196,16 +227,46 @@ const authEvent = async function (req, res, next) {
     }
 }
 
-
+const authEventImage = async function (req, res, next) {
+    const { user } = req;
+    const imageId = req.params.imageId;
+    let img = await EventImage.findByPk(imageId)
+    if (!img) {
+        res.status(404)
+        return res.json({
+            message: "Event image couldn't be found"
+        })
+    }
+    let eventId = imag.eventId;
+    let event = await Event.findByPk(eventId);
+    let groupId = event.groupId;
+    let foundGroup = await group.findByPk(groupId);
+    let cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: groupId,
+            status: 'co-host'
+        }
+    })
+    if (cohost || foundGroup.organizerId == user.id) {
+        return next();
+    } else {
+        const err = new Error('Forbidden');
+        err.title = 'Require proper authorization'
+        err.status = 403;
+        err.errors = { message: 'Require proper authorization' };
+        return next(err);
+    }
+}
 
 const checkId = async function (req, res, next) {
     try {
         const id = parseInt(req.params.groupId);
         const foundGroup = await group.findByPk(id);
-        if (!foundGroup) {
-            throw new Error();
+        if (foundGroup) {
+            return next();
         } else {
-            return next()
+            throw new Error()
         }
     } catch (e) {
         res.status(404)
@@ -220,10 +281,10 @@ const authVenueId = async function (req, res, next) {
         let id = req.params.venueId || req.body.venueId;
         id = parseInt(id);
         const venue = await Venue.findByPk(id);
-        if (!venue) {
-            throw new Error();
+        if (venue) {
+            return next();
         } else {
-            return next()
+            throw new Error()
         }
     } catch (e) {
         res.status(404)
@@ -237,10 +298,10 @@ const authEventId = async function (req, res, next) {
     try {
         const id = parseInt(req.params.eventId);
         const event = await Event.findByPk(id);
-        if (!event) {
-            throw new Error();
-        } else {
+        if (event) {
             return next()
+        } else {
+            throw new Error()
         }
     } catch (e) {
         res.status(404)
@@ -250,4 +311,4 @@ const authEventId = async function (req, res, next) {
     }
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, strictAuthGroup, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId };
+module.exports = { setTokenCookie, restoreUser, requireAuth, strictAuthGroup, authGroup, authGroupImage, authVenue, authEvent, authEventImage, checkId, authVenueId, authEventId };
