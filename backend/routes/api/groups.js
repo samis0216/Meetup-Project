@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator')
 const { group, User, GroupImage, Venue, Event, Membership, Attendance } = require('../../db/models')
 const { handleValidationErrors } = require('../../utils/validation')
 const { requireAuth, authGroup, authVenue, authEvent, checkId, authVenueId, authEventId, strictAuthGroup } = require('../../utils/auth')
-
+const { Op } = require("sequelize");
 
 const router = express.Router()
 
@@ -156,23 +156,41 @@ router.get('/', async (req, res) => {
 // GET GROUP ASSOCIATED WITH CURRENT USER
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req
-    let groups;
     let groupsInfo = [];
     if (user) {
-        groups = await user.getOrganizations();
-        for (let Group of groups) {
-            let members = await Group.getMems()
-            let previewImage = await Group.getGroupImages({
-                where: {
-                    preview: true
-                }
-            });
-            let numMembers = members.length;
-            Group = Group.toJSON()
-            Group.numMembers = numMembers;
-            if (previewImage.length) Group.previewImage = previewImage[0].url;
-            delete Group.Membership
-            groupsInfo.push(Group);
+        // groups = await user.getOrganizations();
+        // console.log(groups)
+        // for (let Group of groups) {
+        //     let members = await Group.getMems()
+        //     let previewImage = await Group.getGroupImages({
+        //         where: {
+        //             preview: true
+        //         }
+        //     });
+        //     let numMembers = members.length;
+        //     Group = Group.toJSON()
+        //     Group.numMembers = numMembers;
+        //     if (previewImage.length) Group.previewImage = previewImage[0].url;
+        //     delete Group.Membership
+        //     groupsInfo.push(Group);
+        // }
+        let memberships = await Membership.findAll({
+            where: {
+                userId: user.id
+            },
+            attributes: ['groupId']
+        })
+        for (let i of memberships) {
+            groupsInfo.push(await group.findByPk(i.groupId))
+        }
+        let ownedGroups = await group.findAll({
+            where: {
+                organizerId: user.id
+            }
+        })
+
+        for (let o of ownedGroups) {
+            if(!groupsInfo.includes(o)) groupsInfo.push(o)
         }
     }
     res.json({
@@ -209,16 +227,15 @@ router.post('/', requireAuth, validateGroup, async (req, res) => {
     validateGroup
     let newGroup = await group.create({
         name,
-        organizerId: 1,
+        organizerId: user.id,
         about,
         type,
         private,
         city,
         state
     })
-
     res.status(201)
-    res.json(newGroup)
+    return res.json(newGroup)
 })
 
 // ADD NEW IMAGE TO GROUP
@@ -513,11 +530,15 @@ router.put('/:groupId/membership', requireAuth, checkId, authGroup, async (req, 
             }
         })
     }
+    console.log(member)
     if ((organizer == user.id || membership) && status === 'member') {
         member.status = status;
+        member.save()
     } else if (organizer == user.id && status === 'co-host') {
         member.status = status;
-    } else {
+        member.save()
+    }
+    else {
         res.status(400)
         return res.json({
             message: "Status must be either 'member' or 'co-host'"

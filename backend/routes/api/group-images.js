@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.delete('/:imageId', requireAuth, authGroupImage, async (req, res) => {
     const imgId = req.params.imageId;
-    let img = await GroupImage.findByPk(imageId)
+    let img = await GroupImage.findByPk(imgId)
     await img.destroy();
     res.json({
         message: "Successfully deleted"
