@@ -140,7 +140,14 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       }
+    },
+    scopes: {
+      noDesc: {
+      attributes: {
+        exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt']
+      }
     }
+  }
   });
   return Event;
 };

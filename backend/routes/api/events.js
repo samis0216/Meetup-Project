@@ -113,7 +113,7 @@ const validateQuery = [
 ]
 
 router.get('/', validateQuery, async (req, res) => {
-    const pagination = {};
+    const pagination = {}
     const { page, size, name, type, startDate } = req.query;
     if(page > 10) page = 10
     if(size > 20) size = 20
@@ -141,7 +141,7 @@ router.get('/', validateQuery, async (req, res) => {
         startDate = startDate.slice(1, startDate.length - 1)
         pagination.where.startDate = new Date(startDate);
     }
-    const allEvents = await Event.findAll(pagination)
+    const allEvents = await Event.scope("noDesc").findAll(pagination)
     let Events = []
     for (let event of allEvents) {
         let attendees = await event.getUsers();
@@ -151,10 +151,9 @@ router.get('/', validateQuery, async (req, res) => {
                 preview: true
             }
         });
-        event = event.toJSON();
-        event.numAttending = numAttending;
+        event.dataValues.numAttending = numAttending;
         if (previewImage.length) {
-            event.previewImage = previewImage[0].url;
+            event.dataValues.previewImage = previewImage[0].url;
         }
         Events.push(event);
     }
@@ -236,7 +235,14 @@ router.put('/:eventId', requireAuth, authEventId, authVenueId, validateEvent, au
         endDate
     })
 
-    res.json(updatedEvent)
+    return res.json(await Event.findOne({
+        where: {
+            id: updatedEvent.id,
+        },
+        attributes: {
+            exclude: ['updatedAt']
+        }
+    }))
 
 })
 

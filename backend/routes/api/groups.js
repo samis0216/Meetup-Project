@@ -193,6 +193,18 @@ router.get('/current', requireAuth, async (req, res) => {
             if(!groupsInfo.includes(o)) groupsInfo.push(o)
         }
     }
+    console.log(groupsInfo)
+    for (let Group of groupsInfo) {
+        let members = await Group.getMems()
+        let previewImage = await Group.getGroupImages({
+            where: {
+                preview: true
+            }
+        });
+        let numMembers = members.length;
+        Group.dataValues.numMembers = numMembers;
+        if (previewImage.length) Group.dataValues.previewImage = previewImage[0].url;
+    }
     res.json({
         Groups: groupsInfo
     })
@@ -202,6 +214,8 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:groupId', checkId, async (req, res) => {
     const id = parseInt(req.params.groupId);
     const Group = await group.findByPk(id);
+    const numMembers = await Group.getMems()
+    console.log(numMembers)
     if (!Group) {
         return res.json({
             message: "Group couldn't be found"
@@ -214,6 +228,7 @@ router.get('/:groupId', checkId, async (req, res) => {
     const images = await Group.getGroupImages();
     res.json({
         ...Group.dataValues,
+        numMembers: numMembers.length,
         GroupImages: images,
         Organizer: organizer,
         Venues: venues
@@ -347,7 +362,7 @@ router.post('/:groupId/venues', requireAuth, checkId, authGroup, validateVenue, 
 router.get('/:groupId/events', checkId, async (req, res) => {
     const groupdId = req.params.groupId
     const foundGroup = !(await group.findByPk(groupdId)) ? res.json({ message: "Group couldn't be found" }) : res.status(200)
-    const allEvents = await Event.findAll({
+    const allEvents = await Event.scope('noDesc').findAll({
         where: {
             groupId: groupdId
         },
@@ -425,9 +440,18 @@ router.get('/:groupId/members', checkId, async (req, res) => {
             },
             through: ['status']
         })
+        console.log(members)
         return res.json({
             Members: members
         })
+        // members = await User.findAll({
+        //     include: {
+        //         model: Membership
+        //     },
+        //     where: {
+        //         id: userId
+        //     }
+        // })
     } else {
         members = await foundGroup.getMems({
             attributes: {
@@ -435,7 +459,7 @@ router.get('/:groupId/members', checkId, async (req, res) => {
             },
             through: ['status']
         })
-        console.log(members)
+        // console.log(members)
         for (let member of members) {
             if (member.Memberships.status !== 'pending') {
                 // const userNames = await User.findByPk(member.userId)

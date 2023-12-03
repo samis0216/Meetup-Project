@@ -52,12 +52,12 @@ router.put('/:venueId', requireAuth, authVenueId, authVenue, validateVenue, asyn
             lat,
             lng
         })
-        res.json(updated)
-        // res.json(await Venue.findByPk(venueId, {
-        //     attributes: {
-        //         exclude: ['createdAt', 'updatedAt']
-        //     }
-        // }))
+        // res.json(updated)
+        res.json(await Venue.findByPk(venueId, {
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        }))
     }
 })
 
