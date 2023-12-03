@@ -434,40 +434,44 @@ router.get('/:groupId/members', checkId, async (req, res) => {
     let members;
     let result = [];
     if (foundGroup.organizerId === user.id || foundCohost) {
-        members = await foundGroup.getMems({
-            attributes: {
-                exclude: ['username']
+        members = await group.findOne({
+            where: {
+                id: groupId
             },
-            through: ['status']
+            include: [{
+                model: User,
+                as: 'Mems', // Assuming 'Members' is the alias for your association
+                attributes: ['id', 'firstName', 'lastName'], // Fields from the Users model
+                through: {
+                    model: Membership,
+                    as: 'Membership', // Alias for the join table, if you have set it
+                    attributes: ['status'] // Only include the 'status' field from Memberships
+                }
+            }]
         })
-        console.log(members)
         return res.json({
-            Members: members
+            Members: members.Mems
         })
-        // members = await User.findAll({
-        //     include: {
-        //         model: Membership
-        //     },
-        //     where: {
-        //         id: userId
-        //     }
-        // })
     } else {
-        members = await foundGroup.getMems({
-            attributes: {
-                exclude: ['username']
+        members = await group.findOne({
+            where: {
+                id: groupId
             },
-            through: ['status']
+            include: [{
+                model: User,
+                as: 'Mems', // Assuming 'Members' is the alias for your association
+                attributes: ['id', 'firstName', 'lastName'], // Fields from the Users model
+                through: {
+                    model: Membership,
+                    as: 'Membership', // Alias for the join table, if you have set it
+                    attributes: ['status'] // Only include the 'status' field from Memberships
+                }
+            }]
         })
         // console.log(members)
-        for (let member of members) {
-            if (member.Memberships.status !== 'pending') {
-                // const userNames = await User.findByPk(member.userId)
-                // console.log(userNames)
-                // let firstName = userNames.firstName;
-                // let lastName = userNames.lastName
-                // member.firstName = firstName;
-                // member.lastName = lastName
+        for (let member of members.Mems) {
+            console.log(members.Mems)
+            if (member.Membership.status !== 'pending') {
                 result.push(member);
             }
         }
@@ -568,11 +572,13 @@ router.put('/:groupId/membership', requireAuth, checkId, authGroup, async (req, 
             message: "Status must be either 'member' or 'co-host'"
         })
     }
+    console.log(memberId)
     return res.json({
-        id: member.id,
+        id: memberId,
+        userId: member.userId,
         groupId: groupId,
-        memberId: member.userId,
         status: member.status
+
     });
 })
 

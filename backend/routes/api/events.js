@@ -10,24 +10,31 @@ const router = express.Router()
 
 const validateEvent = [
     check('venueId')
-        .exists()
+        .optional()
         .isInt()
+        .custom(async (value) => {
+            let venue = await Venue.findByPk(value);
+
+            if (!venue) {
+                throw new Error("Venue does not exist")
+            }
+            return true
+        })
         .withMessage('Venue does not exist'),
     check('name')
-        .exists()
-        .isString()
+        .optional()
         .isLength({ min: 5 })
         .withMessage('Name must be 60 characters or less'),
     check('type')
-        .exists()
+        .optional()
         .isIn(['Online', 'In person'])
         .withMessage('Type must be "Online" or "In person"'),
     check('capacity')
-        .exists()
+        .optional()
         .isInt({ min: 1 })
         .withMessage('Capacity must be an integer'),
     check('price')
-        .exists()
+        .optional()
         .isFloat()
         .custom((value) => {
             value = value.toFixed(2);
@@ -39,11 +46,11 @@ const validateEvent = [
         })
         .withMessage('Price is invalid'),
     check('description')
-        .exists()
-        .isString()
+        .optional()
+        .isAlpha('en-US', { ignore: [' ', '-', '!', '.', '?', "'", '"', '(', ')'] })
         .withMessage('Description is required'),
     check('startDate')
-        .exists()
+        .optional()
         .custom(value => {
             let enteredDate = new Date(value);
             let todaysDate = new Date();
@@ -54,10 +61,18 @@ const validateEvent = [
         })
         .withMessage('Start date must be in the future'),
     check('endDate')
-        .exists()
-        .custom((endDate, { req }) => {
+        .optional()
+        .custom(async (endDate, { req }) => {
+            let event = await Event.findByPk(parseInt(req.params.eventId))
+            let start = event.startDate;
+
+            if (req.body.startDate) {
+                start = req.body.startDate;
+            }
+
             let enteredDate = new Date(endDate);
-            let startDate = new Date(req.body.startDate);
+            let startDate = new Date(start);
+
             if (enteredDate.getTime() < startDate.getTime()) {
                 throw new Error('End date is less than start date');
             }
@@ -70,78 +85,95 @@ const validateEvent = [
 const validateQuery = [
     query('page')
         .default('1')
-        .isInt()
-        .custom((page) => {
-            if (parseInt(page) < 1) {
+        .custom((value) => {
+            if (parseInt(value) < 1) {
                 throw new Error('Page must be greater than or equal to 1')
-            } else {
-                return true
             }
+            return true
         })
-        .withMessage("Page must be greater than or equal to 1"),
+        .withMessage('Page must be greater than or equal to 1'),
     query('size')
         .default('20')
-        .isInt()
-        .custom((size) => {
-            if (size < 1) {
-                throw new Error('Page must be greater than or equal to 1')
-            } else {
-                return true
+        .custom((value) => {
+            if (parseInt(value) < 1) {
+                throw new Error('Size must be greater than or equal to 1')
             }
+            return true
         })
-        .withMessage("Size must be greater than or equal to 1"),
+        .withMessage('Size must be greater than or equal to 1'),
     query('name')
         .optional()
-        .isString()
-        .withMessage("Name must be a string"),
+        .isAlpha('en-US', { ignore: [' ', '-', '"'] })
+        .withMessage('Name must be a string'),
     query('type')
         .optional()
-        .isString()
         .isIn(['Online', 'In person'])
-        .withMessage("Type must be 'Online' or 'In person'"),
+        .withMessage('Type must be "Online" or "In person"'),
     query('startDate')
         .optional()
-        .custom((date) => {
-            date = date.slice(1, date.length - 1)
-            date = new Date(date);
-            if (!date.getTime()) {
-                throw new Error('Start date must be a valid datetime');
-            } return true
+        .custom((startDate) => {
+
+            startDate = new Date(startDate);
+
+            if (!startDate.getTime()) {
+                throw new Error('Start date must be a valid datetime (YYYY-MM-DD)');
+            }
+            return true
         })
-        .withMessage('Start date must be a valid datetime'),
+        .withMessage('Start date must be a valid datetime (YYYY-MM-DD)'),
     handleValidationErrors
 ]
 
 router.get('/', validateQuery, async (req, res) => {
-    const pagination = {}
-    const { page, size, name, type, startDate } = req.query;
-    if(page > 10) page = 10
-    if(size > 20) size = 20
-    pagination.include = [{
-        model: group,
+    let { page, size, name, type, startDate } = req.query;
+
+    page = parseInt(page);
+
+    if (page > 10) {
+        page = 10;
+    }
+
+    size = parseInt(size);
+
+    if (size > 20) {
+        size = 20;
+    }
+
+    let queryObj = {};
+
+    queryObj.include = [{
+        model: Group,
         attributes: ['id', 'name', 'city', 'state']
     }, {
         model: Venue,
         attributes: ['id', 'city', 'state']
     }]
-    const offset = (page - 1) * size;
-    const limit = size;
-    pagination.offset = offset;
-    pagination.limit = limit;
-    if(name) {
-        pagination.where = {};
-        name = name.slice(1, name.length - 1)
-        pagination.where.name = name;
+
+    let limit = size;
+
+    let offset = (page - 1) * size;
+
+    queryObj.limit = limit;
+
+    queryObj.offset = offset;
+
+    // console.log(queryObj);
+
+    queryObj.where = {};
+    if (name) {
+        queryObj.where.name = name;
+        // console.log(queryObj);
     }
-    if(type) {
-        type = type.slice(1, type.length - 1)
-        pagination.where.type = type;
+    if (type) {
+        queryObj.where.type = type;
+        // console.log(queryObj);
     }
-    if(startDate) {
-        startDate = startDate.slice(1, startDate.length - 1)
-        pagination.where.startDate = new Date(startDate);
+    if (startDate) {
+        queryObj.where.startDate = new Date(startDate);
+        // console.log(new Date('10-22-2023'));
+        // console.log(queryObj);
     }
-    const allEvents = await Event.scope("noDesc").findAll(pagination)
+    const allEvents = await Event.scope("noDesc").findAll(queryObj)
     let Events = []
     for (let event of allEvents) {
         let attendees = await event.getUsers();
