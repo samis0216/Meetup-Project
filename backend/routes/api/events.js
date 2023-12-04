@@ -166,6 +166,7 @@ router.get('/', validateQuery, async (req, res) => {
             }
         });
         event.dataValues.numAttending = numAttending;
+        console.log(previewImage)
         if (previewImage.length) {
             event.dataValues.previewImage = previewImage[0].url;
         }
