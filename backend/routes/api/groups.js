@@ -573,13 +573,17 @@ router.put('/:groupId/membership', requireAuth, checkId, authGroup, async (req, 
             }
         })
     }
-    console.log(member)
     if ((organizer == user.id || membership) && status === 'member') {
         member.status = status;
         member.save()
     } else if (organizer == user.id && status === 'co-host') {
         member.status = status;
         member.save()
+    } else if (membership && status === 'co-host') {
+        res.status(403)
+        res.json({
+            message: "Forbidden"
+        })
     }
     else {
         res.status(400)

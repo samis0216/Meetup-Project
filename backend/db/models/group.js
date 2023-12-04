@@ -34,10 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     organizerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id',
-      }
+      // references: {
+      //   model: 'Users',
+      //   key: 'id',
+      // }
     },
     name: {
       type: DataTypes.STRING,

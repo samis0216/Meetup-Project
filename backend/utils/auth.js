@@ -127,14 +127,16 @@ const authGroup = async (req, res, next) => {
 const authGroupImage = async (req, res, next) => {
     const { user } = req;
     const imageId = req.params.imageId;
-    let image = await GroupImage.findByPk(imageId)
+    let image = await GroupImage.scope('specific').findByPk(imageId)
     if (!image) {
         res.status(404)
         return res.json({
             message: "Group image couldn't be found"
         })
     }
+    console.log(image)
     let groupId = image.groupId;
+    console.log(groupId)
     let foundGroup = await group.findByPk(groupId);
     let cohost = await Membership.findOne({
         where: {
@@ -164,7 +166,14 @@ const authVenue = async (req, res, next) => {
         venueGroup = await group.findByPk(venue.groupId);
     }
     if (venueGroup) {
-        if (venueGroup.organizerId === user.id) {
+        let cohost = await Membership.findOne({
+            where: {
+                userId: user.id,
+                groupId: venue.groupId,
+                status: 'co-host'
+            }
+        })
+        if (venueGroup.organizerId === user.id || cohost) {
             return next();
         }
         else {
@@ -227,14 +236,14 @@ const authEvent = async function (req, res, next) {
 const authEventImage = async function (req, res, next) {
     const { user } = req;
     const imageId = req.params.imageId;
-    let img = await EventImage.findByPk(imageId)
-    if (!img) {
+    let image = await EventImage.findByPk(imageId)
+    if (!image) {
         res.status(404)
         return res.json({
             message: "Event image couldn't be found"
         })
     }
-    let eventId = img.eventId;
+    let eventId = image.eventId;
     let event = await Event.findByPk(eventId);
     let groupId = event.groupId;
     let foundGroup = await group.findByPk(groupId);

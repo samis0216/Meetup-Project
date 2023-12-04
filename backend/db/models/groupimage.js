@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   GroupImage.init({
     groupId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'groups',
-        key: 'id'
-      }
+      // references: {
+      //   model: 'groups',
+      //   key: 'id'
+      // }
     },
     url: {
       type: DataTypes.STRING,
@@ -36,6 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ['groupId', 'createdAt', 'updatedAt']
+      }
+    },
+    scopes: {
+      specific: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
       }
     }
   });

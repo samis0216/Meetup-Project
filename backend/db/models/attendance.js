@@ -18,18 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Events',
-        key: 'id',
-      }
+      // references: {
+      //   model: 'Events',
+      //   key: 'id',
+      // }
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id',
-      }
+      // references: {
+      //   model: 'Users',
+      //   key: 'id',
+      // }
     },
     status: {
       type: DataTypes.STRING,
@@ -44,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'userId', 'eventId']
+      }
+    },
+    scopes: {
+      specific: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+          include: ['id', 'status']
+        }
       }
     }
   });

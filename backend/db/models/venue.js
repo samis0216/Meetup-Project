@@ -22,11 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'groups',
-        key: 'id',
+      // references: {
+      //   model: 'groups',
+      //   key: 'id',
 
-      }
+      // }
     },
     address: {
       type: DataTypes.STRING,

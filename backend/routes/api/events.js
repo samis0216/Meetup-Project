@@ -112,9 +112,7 @@ const validateQuery = [
     query('startDate')
         .optional()
         .custom((startDate) => {
-
             startDate = new Date(startDate);
-
             if (!startDate.getTime()) {
                 throw new Error('Start date must be a valid datetime (YYYY-MM-DD)');
             }
@@ -156,6 +154,7 @@ router.get('/', validateQuery, async (req, res) => {
     if (startDate) {
         queryObj.where.startDate = new Date(startDate);
     }
+    console.log(queryObj)
     const allEvents = await Event.scope("noDesc").findAll(queryObj)
     let Events = []
     for (let event of allEvents) {
@@ -207,22 +206,40 @@ router.get('/:eventId', authEventId, async (req, res) => {
 
 router.post('/:eventId/images', requireAuth, authEventId, async (req, res) => {
     const { user } = req;
-    const eventId = parseInt(req.params.eventId);
     const { url, preview } = req.body;
-    const event = await Event.findByPk(eventId)
-    if (!event) return res.json({
-        message: "Event couldn't be found"
-    })
-    const newImg = await event.createEventImage({
-        url,
-        preview
-    })
-
-    res.json(await EventImage.findByPk(newImg.id, {
-        attributes: {
-            exclude: ['createdAt', 'updatedAt', 'eventId']
+    const eventId = parseInt(req.params.eventId);
+    let attendance = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: user.id,
+            status: 'attending'
         }
-    }))
+    })
+    let event = await Event.findByPk(eventId)
+    let foundGroup = await group.findByPk(event.groupId);
+    let membership = await Membership.findOne({
+        where: {
+            groupId: event.groupId,
+            userId: user.id,
+            status: 'co-host'
+        }
+    })
+    if (attendance || membership || foundGroup.organizerId == user.id) {
+        let image = { url, preview }
+        let newImage = await event.createEventImage(image)
+        image = await EventImage.findByPk(newImage.id, {
+            attributes: {
+                exclude: ['eventId']
+            }
+        });
+        return res.json(image);
+    } else {
+        const err = new Error('Forbidden');
+        err.title = 'Require proper authorization'
+        res.status(403);
+        err.errors = { message: 'Require proper authorization' };
+        return res.json(err);
+    }
 })
 
 router.put('/:eventId', requireAuth, authEventId, authVenueId, validateEvent, authEvent, async (req, res) => {
@@ -336,12 +353,18 @@ router.post('/:eventId/attendance', requireAuth, authEventId, async (req, res, n
             eventId: eventId
         }
     })
+    console.log(attending)
     if (!membership) {
         const err = new Error('Forbidden');
         err.title = 'Require proper authorization'
         err.status = 403;
         err.errors = { message: 'Require proper authorization' };
         return next(err);
+    } else if (membership.status === 'pending') {
+        res.status(403)
+        res.json({
+            message: "User is not a member (currently pending)"
+        })
     } else if (attending) {
         if (attending.status === 'pending') {
             res.status(400)
@@ -378,7 +401,7 @@ router.put('/:eventId/attendance', requireAuth, authEventId, authEvent, async (r
     const foundGroup = await group.findByPk(groupId);
     const organizer = foundGroup.organizerId;
     let attendanceUser = await User.findByPk(userId);
-    let attendance = await Attendance.findOne({
+    let attendance = await Attendance.scope('specific').findOne({
         where: {
             userId: userId,
             eventId: eventId
@@ -415,8 +438,7 @@ router.put('/:eventId/attendance', requireAuth, authEventId, authEvent, async (r
         })
     }
     if ((organizer == user.id || membership)) {
-        attendance.status = status;
-        await attendance.save()
+        attendance.status = status
     }
     else {
         const err = new Error('Forbidden');
@@ -425,6 +447,7 @@ router.put('/:eventId/attendance', requireAuth, authEventId, authEvent, async (r
         err.errors = { message: 'Require proper authorization' };
         return next(err);
     }
+    await attendance.save()
     return res.json({
         id: attendance.id,
         groupId: groupId,
@@ -443,7 +466,7 @@ router.delete('/:eventId/attendance', requireAuth, authEventId, async (req, res,
         }
     })
     let organizerId = event.group.organizerId;
-    let attendance = await Attendance.findOne({
+    let attendance = await Attendance.scope('specific').findOne({
         where: {
             eventId: eventId,
             userId: userId

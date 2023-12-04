@@ -27,8 +27,8 @@ module.exports = {
         type: 'In person',
         capacity: 20,
         price: 20,
-        startDate: '11-29-2023',
-        endDate: '11-30-2023'
+        startDate: '2023-12-04',
+        endDate: '2023-12-15'
       },
       {
         venueId: 2,
@@ -38,8 +38,8 @@ module.exports = {
         type: 'Online',
         capacity: 15,
         price: 15,
-        startDate: '12-05-2023',
-        endDate: '12-06-2023'
+        startDate: '2023-12-22',
+        endDate: '2023-12-25'
       },
       {
         venueId: 3,
@@ -49,8 +49,8 @@ module.exports = {
         type: 'In person',
         capacity: 30,
         price: 50,
-        startDate: '11-30-2023',
-        endDate: '12-02-2023'
+        startDate: '2023-11-29',
+        endDate: '2023-11-30'
       }
     ], { validate: true })
   },
