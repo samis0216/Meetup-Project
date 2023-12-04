@@ -25,6 +25,16 @@ const validateSignup = [
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
         .withMessage('Password must be 6 characters or more.'),
+    check('firstName')
+        .exists({ checkFalsy: true })
+        .isLength({ max: 30 })
+        .isAlpha('en-US', { ignore: '-' })
+        .withMessage('Please provide a valid first name without numbers or spaces. Must be below 31 characters.'),
+    check('lastName')
+        .exists({ checkFalsy: true })
+        .isLength({ max: 30 })
+        .isAlpha('en-US', { ignore: '-' })
+        .withMessage('Please provide a valid last name without numbers or spaces. Must be below 31 characters.'),
     handleValidationErrors
 ];
 

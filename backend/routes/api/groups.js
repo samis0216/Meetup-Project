@@ -30,7 +30,7 @@ const validateEvent = [
         .withMessage('Capacity must be an integer'),
     check('price')
         .exists()
-        .isFloat({min: 0})
+        .isFloat({ min: 0 })
         .custom((value) => {
             value = value.toFixed(2);
             console.log(value);
@@ -400,6 +400,16 @@ router.post('/:groupId/events', requireAuth, checkId, validateEvent, authGroup, 
     const { user } = req
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
     const groupdId = req.params.groupId
+    const venue = await Venue.findByPk(parseInt(venueId));
+    if (!venue) {
+        res.status(400);
+        return res.json({
+            message: 'Bad Request',
+            errors: {
+                venueId: "Venue does not exist"
+            }
+        })
+    }
     const foundGroup = await group.findByPk(groupdId)
     if (!foundGroup) return res.json({
         message: "Group couldn't be found"

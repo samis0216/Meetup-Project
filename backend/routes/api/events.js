@@ -126,52 +126,35 @@ const validateQuery = [
 
 router.get('/', validateQuery, async (req, res) => {
     let { page, size, name, type, startDate } = req.query;
-
     page = parseInt(page);
-
     if (page > 10) {
         page = 10;
     }
-
     size = parseInt(size);
-
     if (size > 20) {
         size = 20;
     }
-
     let queryObj = {};
-
     queryObj.include = [{
-        model: Group,
+        model: group,
         attributes: ['id', 'name', 'city', 'state']
     }, {
         model: Venue,
         attributes: ['id', 'city', 'state']
     }]
-
     let limit = size;
-
     let offset = (page - 1) * size;
-
     queryObj.limit = limit;
-
     queryObj.offset = offset;
-
-    // console.log(queryObj);
-
     queryObj.where = {};
     if (name) {
         queryObj.where.name = name;
-        // console.log(queryObj);
     }
     if (type) {
         queryObj.where.type = type;
-        // console.log(queryObj);
     }
     if (startDate) {
         queryObj.where.startDate = new Date(startDate);
-        // console.log(new Date('10-22-2023'));
-        // console.log(queryObj);
     }
     const allEvents = await Event.scope("noDesc").findAll(queryObj)
     let Events = []
@@ -431,7 +414,10 @@ router.put('/:eventId/attendance', requireAuth, authEventId, authEvent, async (r
             }
         })
     }
-    if ((organizer == user.id || membership)) attendance.status = status
+    if ((organizer == user.id || membership)) {
+        attendance.status = status;
+        await attendance.save()
+    }
     else {
         const err = new Error('Forbidden');
         err.title = 'Require proper authorization'
