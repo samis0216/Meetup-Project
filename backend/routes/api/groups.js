@@ -30,7 +30,7 @@ const validateEvent = [
         .withMessage('Capacity must be an integer'),
     check('price')
         .exists()
-        .isFloat()
+        .isFloat({min: 0})
         .custom((value) => {
             value = value.toFixed(2);
             console.log(value);
@@ -112,23 +112,28 @@ const validateImage = [
 const validateVenue = [
     check('address')
         .exists({ checkFalsy: true })
+        .isString()
         .withMessage('Street address is required'),
     check('city')
         .exists({ checkFalsy: true })
+        .isString()
+        .isAlpha('en-US', { ignore: [' ', '-'] })
         .withMessage('City is required'),
     check('state')
         .exists({ checkFalsy: true })
+        .isString()
+        .isAlpha('en-US', { ignore: [' ', '-'] })
         .withMessage('State is required'),
     check('lat')
-        .exists({ checkFalsy: true })
-        .isNumeric()
+        .exists({ checkNull: true })
+        .isFloat({ min: -90, max: 90 })
         .withMessage('Latitude is not valid'),
     check('lng')
-        .exists({ checkFalsy: true })
-        .isNumeric()
+        .exists({ checkNull: true })
+        .isFloat({ min: -180, max: 180 })
         .withMessage('Longitude is not valid'),
     handleValidationErrors
-]
+];
 
 // GET ALL GROUPS
 router.get('/', async (req, res) => {
@@ -190,7 +195,7 @@ router.get('/current', requireAuth, async (req, res) => {
         })
 
         for (let o of ownedGroups) {
-            if(!groupsInfo.includes(o)) groupsInfo.push(o)
+            if (!groupsInfo.includes(o)) groupsInfo.push(o)
         }
     }
     console.log(groupsInfo)
