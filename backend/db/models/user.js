@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.group, {
         foreignKey: 'organizerId',
         onDelete: "CASCADE",
-        hooks: true})
+        hooks: true
+      })
     }
   };
 
@@ -57,10 +58,18 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       firstName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1, 30]
+        }
       },
       lastName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1, 30]
+        }
       }
     },
     {

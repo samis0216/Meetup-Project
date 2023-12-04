@@ -347,13 +347,32 @@ router.post('/:eventId/attendance', requireAuth, authEventId, async (req, res, n
             groupId: groupId
         }
     });
+    let attending = await Attendance.findOne({
+        where: {
+            userId: user.id,
+            eventId: eventId
+        }
+    })
     if (!membership) {
         const err = new Error('Forbidden');
         err.title = 'Require proper authorization'
         err.status = 403;
         err.errors = { message: 'Require proper authorization' };
         return next(err);
-    } else {
+    } else if (attending) {
+        if (attending.status === 'pending') {
+            res.status(400)
+            return res.json({
+                message: "Attendance has already been requested"
+            })
+        } else if (attending.status === 'attending') {
+            res.status(400)
+            return res.json({
+                message: "User is already an attendee of the event"
+            })
+        }
+    }
+    else {
         await Attendance.create({
             userId: user.id,
             eventId: eventId,
