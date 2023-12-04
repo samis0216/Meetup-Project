@@ -22,7 +22,7 @@ const validateVenue = [
         .withMessage('State is required'),
     check('lat')
         .exists({checkFalsy: true})
-        .isNumeric({min: -180, max: 180})
+        .isNumeric({min: -90, max: 90})
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({checkFalsy: true})

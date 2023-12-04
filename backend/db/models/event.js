@@ -103,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.NUMERIC,
+      type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         isNumeric: {

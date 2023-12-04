@@ -35,7 +35,7 @@ const validateEvent = [
         .withMessage('Capacity must be an integer'),
     check('price')
         .optional()
-        .isFloat()
+        .isFloat({min: 0})
         .custom((value) => {
             value = value.toFixed(2);
             //   console.log(value);
