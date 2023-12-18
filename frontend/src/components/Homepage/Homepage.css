@@ -1,0 +1,64 @@
+.home-main-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px   ;
+}
+
+.home-first-text-container {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    padding: 10px;
+}
+.home-first-text {
+    width: 50%
+}
+
+.img-container {
+    width: 50%;
+}
+
+.second-body-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.how-meetup {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.how-meetup-text {
+    display: flex;
+    justify-content: center;
+}
+
+.third-body-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.button-boxes {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.join-meetup {
+    color: white;
+    background-color: teal;
+    padding: 10px;
+    text-decoration: none;
+    border: solid black 2px;
+    box-shadow: 3px 3px;
+}
