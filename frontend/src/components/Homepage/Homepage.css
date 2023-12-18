@@ -2,14 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px   ;
+    gap: 20px;
 }
 
 .home-first-text-container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 80%;
-    padding: 10px;
+    gap: 10px;
 }
 .home-first-text {
     width: 50%
@@ -17,6 +19,11 @@
 
 .img-container {
     width: 50%;
+
+}
+
+#first-img {
+    width: 100%
 }
 
 .second-body-container {

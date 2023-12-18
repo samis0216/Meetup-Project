@@ -9,13 +9,13 @@ export default function Homepage () {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci eu lobortis elementum nibh tellus molestie nunc non. Lectus vestibulum mattis ullamcorper velit. Nascetur ridiculus mus mauris vitae ultricies leo. Quisque id diam vel quam elementum pulvinar etiam non quam. Nam at lectus urna duis convallis convallis tellus id interdum. Accumsan sit amet nulla facilisi morbi tempus.</p>
                 </div>
                 <div className='img-container'>
-                    <img src="https://placehold.co/325x325" />
+                    <img id='first-img' src="https://placehold.co/325x325" />
                 </div>
             </div>
             <div className='second-body-container'>
                 <div className='how-meetup'>
                     <h3>How Meetup Works</h3>
-                    <p class='how-meetup-text'>
+                    <p className='how-meetup-text'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </p>
                 </div>
@@ -37,7 +37,7 @@ export default function Homepage () {
                     <p>Something for creating group</p>
                 </div>
             </div>
-            <a href="" className='join-meetup'>Join Meetup</a>
+            <a href="/" className='join-meetup'>Join Meetup</a>
         </div>
     )
 }
