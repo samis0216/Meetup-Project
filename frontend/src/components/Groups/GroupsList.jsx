@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './GroupsList.css'
 import { getGroups } from '../../store/groups'
 
+
+
 export default function GroupsList() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getGroups())
@@ -24,15 +27,17 @@ export default function GroupsList() {
                 {groups_initial && groups_initial.map((group) => (
                     <div key={group.id}>
                         <hr />
-                        <div className='group-container'>
-                            <img src="https://placehold.co/100x50" alt="" className='groupImg' />
-                            <div className='group-desc'>
-                                <h2>{group.name}</h2>
-                                <p>{group.city}, {group.state}</p>
-                                <p>{group.about}</p>
-                                <p>(Insert # Events ) • {group.type}</p>
+                        <Link className='group-links' to={`/groups/${group.id}`}>
+                            <div className='group-container' >
+                                <img src="https://placehold.co/100x50" alt="" className='groupImg' />
+                                <div className='group-desc'>
+                                    <h2>{group.name}</h2>
+                                    <p>{group.city}, {group.state}</p>
+                                    <p>{group.about}</p>
+                                    <p>(Insert # Events ) • {group.type}</p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </div>

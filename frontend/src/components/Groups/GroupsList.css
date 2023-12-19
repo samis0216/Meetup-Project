@@ -37,6 +37,7 @@
 }
 
 .group-container {
+    color: black;
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -50,4 +51,8 @@
 .group-desc {
     width: 50%;
     padding: 10px;
+}
+
+.group-links {
+    text-decoration: none;
 }

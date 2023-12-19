@@ -1,0 +1,37 @@
+.top-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: red solid 1px;
+}
+
+.top-group-container {
+    border: red solid 1px;
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    gap: 20px;
+}
+
+.top-group-container > img {
+    width: 50%;
+}
+
+.top-group-info {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+
+.join-group-button {
+
+    height: 100%;
+    display: flex;
+}
+
+button {
+    align-self: flex-end;
+}

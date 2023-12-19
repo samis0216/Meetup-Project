@@ -1,5 +1,8 @@
+import { csrfFetch } from "./csrf"
+
 // CONSTS
-const GET_EVENTS = 'events/events'
+const GET_EVENTS = 'events/GET_EVENTS'
+const CREATE_EVENT = 'events/CREATE_EVENT'
 
 // ACTION CREATORS
 
@@ -10,10 +13,17 @@ export const getEventsCreator = (events) => {
     }
 }
 
+export const createEventCreator = (event) => {
+    return {
+        type: CREATE_EVENT,
+        event
+    }
+}
+
 // THUNKS
 
 export const getEvents = () => async (dispatch) => {
-    const response = await fetch('/api/events', {
+    const response = await csrfFetch('/api/events', {
         method: 'GET'
     })
 
@@ -29,6 +39,8 @@ const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_EVENTS:
             return action.events
+        // case CREATE_EVENT:
+
         default:
             return state
     }

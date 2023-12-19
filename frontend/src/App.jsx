@@ -6,6 +6,7 @@ import * as sessionActions from './store/session';
 import Homepage from './components/Homepage/Homepage';
 import GroupsList from './components/Groups/GroupsList';
 import EventsList from './components/Events/EventsList';
+import GroupDetails from './components/Groups/GroupDetails';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -35,7 +36,31 @@ const router = createBrowserRouter([
       },
       {
         path: '/groups',
-        element: <GroupsList />
+        element: <GroupsList />,
+          // {
+          //   path: '/current',
+          //   element: <GroupCurrent />
+          // },
+          // {
+          //   path: '/new',
+          //   element: <NewGroupForm />
+          // },
+
+      },
+      {
+        path: '/groups/:groupId',
+        element: <GroupDetails />,
+        // children: [
+        //   {
+        //     path: '/images',
+        //     element:
+        //   },
+        //   {
+        //    path: '/events'
+        // element: <GroupEvents />
+        //    }
+        //
+        // ]
       },
       {
         path: '/events',
