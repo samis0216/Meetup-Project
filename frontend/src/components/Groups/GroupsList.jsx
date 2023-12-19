@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import './GroupsList.css'
 import { getGroups } from '../../store/groups'
 
-export default function GroupsList () {
+export default function GroupsList() {
     const dispatch = useDispatch()
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getGroups())
     }, [])
     const groups_initial = useSelector((state) => state.groups.Groups)
@@ -14,12 +14,14 @@ export default function GroupsList () {
     return (
         <div className='main-body'>
             <div className='event-group-nav'>
-                <Link className='nav-links' to='/events'>Events</Link>
-                <Link className='nav-links' to='/groups'>Groups</Link>
+                <div id='events-groups-buttons'>
+                    <Link className='nav-links' to='/events'>Events</Link>
+                    <h4 className='nav-links' id='current-view'>Groups</h4>
+                </div>
                 <p>Groups in Meetup</p>
             </div>
             <div className='groups-list'>
-                {groups_initial && groups_initial.map((group)=> (
+                {groups_initial && groups_initial.map((group) => (
                     <div key={group.id}>
                         <hr />
                         <div className='group-container'>

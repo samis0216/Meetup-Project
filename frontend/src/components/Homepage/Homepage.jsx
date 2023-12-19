@@ -1,4 +1,5 @@
 import './Homepage.css'
+import { Link } from 'react-router-dom'
 
 export default function Homepage () {
     return (
@@ -23,12 +24,13 @@ export default function Homepage () {
             <div className='third-body-container'>
                 <div className='button-boxes'>
                     <img src="https://placehold.co/200x200" />
-                    <h4>See all groups</h4>
+                    <h4>
+                        <Link to='/groups'>See all groups</Link></h4>
                     <p>Something for Groups</p>
                 </div>
                 <div className='button-boxes'>
                     <img src="https://placehold.co/200x200" />
-                    <h4>Find an event</h4>
+                    <h4><Link to='/events'>Find an event</Link></h4>
                     <p>Something for Events</p>
                 </div>
                 <div className='button-boxes'>
@@ -37,7 +39,7 @@ export default function Homepage () {
                     <p>Something for creating group</p>
                 </div>
             </div>
-            <a href="/" className='join-meetup'>Join Meetup</a>
+            <Link to='/' className='join-meetup'>Join Meetup</Link>
         </div>
     )
 }
