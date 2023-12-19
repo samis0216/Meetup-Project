@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 import Homepage from './components/Homepage/Homepage';
+import GroupsList from './components/Groups/GroupsList';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -29,7 +30,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Homepage />
+        element: <Homepage />,
+      },
+      {
+        path: '/groups',
+        element: <GroupsList />
       }
     ]
   }
