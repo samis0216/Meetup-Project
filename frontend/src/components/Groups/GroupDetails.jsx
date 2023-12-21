@@ -2,20 +2,23 @@ import './GroupDetails.css'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGroups} from '../../store/groups'
+import { getOneGroup} from '../../store/groups'
+import { getEventsByGroupId } from '../../store/events'
 
 export default function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams()
     useEffect(()=> {
-        dispatch(getGroups())
+        dispatch(getOneGroup(groupId))
+        dispatch(getEventsByGroupId(groupId))
     }, [dispatch])
     const groups = useSelector((state) => state.groups.Groups)
-    // const events = useSelector((state) => state.events)
-    console.log(groups)
+    const events = useSelector((state) => state.events)
+    console.log(events)
+    const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
     let group
     if (groups) {
-        group = groups.find((group) => group.id === parseInt(groupId))
+        group = groups[groupId]
     }
     return (
         <div className='details-main'>
@@ -28,7 +31,7 @@ export default function GroupDetails() {
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
-                        <p>(insert # Events) &#x2022; {group.type}</p>
+                        <p>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.type}</p>
                         <p>Organized by (firstName) (lastName)</p>
                         <div className='join-group-button'>
                         <button>Join this group</button>
@@ -46,7 +49,7 @@ export default function GroupDetails() {
                     <p>{group.about}</p>
                 </div>
                 <div className='upcoming-events-container'>
-                    <h4>Upcoming Events (#)</h4>
+                    <h4>Upcoming Events ({events.Upcoming[groupId] && events.Upcoming[groupId].length})</h4>
                     <div>
                         <div className='top-group-container'>
                             <img src="https://placehold.co/50x25" alt="" />

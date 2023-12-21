@@ -18,17 +18,17 @@ function Navigation({ isLoaded }) {
     return (
         <div>
             <div className='header'>
-                <img src="https://assets.stickpng.com/images/584c57c01fc21103bb375bae.png" id='meetup-logo' onClick={redirect}/>
-                <ul>
-                    <li>
-                        <NavLink exact to="/">Home</NavLink>
-                    </li>
-                    {isLoaded && (
-                        <li>
-                            <ProfileButton user={sessionUser} />
-                        </li>
-                    )}
-                </ul>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Meetup_1.svg" id='meetup-logo' onClick={redirect}/>
+                <div className='new-group-and-login'>
+                    <NavLink className='nav-link-navigation' to='/groups/new'>Start a new group</NavLink>
+                    <ul>
+                        {isLoaded && (
+                            <li>
+                                <ProfileButton user={sessionUser} />
+                            </li>
+                        )}
+                    </ul>
+                </div>
             </div>
             <hr />
         </div>

@@ -8,3 +8,13 @@
 #meetup-logo {
     width: 100px;
 }
+
+.new-group-and-login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-link-navigation {
+    text-decoration: none;
+}

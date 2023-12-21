@@ -4,11 +4,11 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-    border: red solid 1px;
+
 }
 
 .top-group-container {
-    border: red solid 1px;
+
     display: flex;
     justify-content: center;
     width: 75%;

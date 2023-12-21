@@ -7,6 +7,7 @@ import Homepage from './components/Homepage/Homepage';
 import GroupsList from './components/Groups/GroupsList';
 import EventsList from './components/Events/EventsList';
 import GroupDetails from './components/Groups/GroupDetails';
+import GroupForm from './components/Groups/GroupForm';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
           //   element: <NewGroupForm />
           // },
 
+      },
+      {
+      path: '/groups/new',
+      element: <GroupForm />
       },
       {
         path: '/groups/:groupId',

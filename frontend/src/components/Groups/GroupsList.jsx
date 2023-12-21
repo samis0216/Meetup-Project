@@ -3,17 +3,20 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './GroupsList.css'
 import { getGroups } from '../../store/groups'
+import { getEvents } from '../../store/events'
 
 
 
 export default function GroupsList() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    let groups_initial = useSelector((state) => state.groups.Groups)
+    groups_initial = Object.values(groups_initial)
     useEffect(() => {
         dispatch(getGroups())
-    }, [])
-    const groups_initial = useSelector((state) => state.groups.Groups)
+        dispatch(getEvents())
+    }, [dispatch])
     console.log(groups_initial)
+    const events = useSelector((state) => state.events)
     return (
         <div className='main-body'>
             <div className='event-group-nav'>
@@ -34,7 +37,7 @@ export default function GroupsList() {
                                     <h2>{group.name}</h2>
                                     <p>{group.city}, {group.state}</p>
                                     <p>{group.about}</p>
-                                    <p>(Insert # Events ) • {group.type}</p>
+                                    <p>{events.Events[group.id] ? events.Events[group.id].length : '0'} {events.Events[group.id] && events.Events[group.id].length === 1 ? 'event' : 'events'} • {group.private ? 'Private' : 'Public'}</p>
                                 </div>
                             </div>
                         </Link>

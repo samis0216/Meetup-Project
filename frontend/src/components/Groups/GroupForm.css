@@ -1,0 +1,17 @@
+.group-form-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.desc-list {
+    display: flex;
+}
+
+.form-sections {
+    width: 100%;
+}
+
+button {
+    align-self: flex-start;
+}
