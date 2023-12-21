@@ -2,26 +2,27 @@ import './GroupDetails.css'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getOneGroup} from '../../store/groups'
+import { getGroups, getOneGroup } from '../../store/groups'
 import { getEventsByGroupId } from '../../store/events'
+// import GroupEventsTile from './GroupEventsTile.jsx'
 
 export default function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams()
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getOneGroup(groupId))
         dispatch(getEventsByGroupId(groupId))
     }, [dispatch])
     const groups = useSelector((state) => state.groups.Groups)
     const events = useSelector((state) => state.events)
     console.log(events)
-    // const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
+    const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
     let group
     if (groups) {
         group = groups[groupId]
     }
-    return (
+    if (Object.values(groups).length) return (
         <div className='details-main'>
             <div className='breadcrumb-container'>
                 &lt; <Link to='/groups'>Groups</Link>
@@ -32,10 +33,11 @@ export default function GroupDetails() {
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
-                        {/* <p>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.type}</p> */}
+                        <p>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.type}</p>
                         <p>Organized by (firstName) (lastName)</p>
-                        <div className='join-group-button'>
-                        <button>Join this group</button>
+                        <div className='group-buttons-container'>
+                            <button>Join this group</button>
+                            <button>Delete Group</button>
                         </div>
                     </div>
                 </div>
@@ -50,21 +52,13 @@ export default function GroupDetails() {
                     <p>{group.about}</p>
                 </div>
                 <div className='upcoming-events-container'>
-                    <h4>Upcoming Events ()</h4>
-                    {/* {events.Upcoming[groupId] && events.Upcoming[groupId].length} */}
+                    <h4>Upcoming Events ({events.Upcoming[groupId] && events.Upcoming[groupId].length})</h4>
                     <div>
-                        <div className='top-group-container'>
-                            <img src="https://placehold.co/50x25" alt="" />
-                            <div className='groupDetail-events'>
-
-                            </div>
-                        </div>
-                        <div >
-
-                        </div>
+                        {/* <GroupEventsTile /> */}
                     </div>
                 </div>
             </div>
         </div>
     )
+    else dispatch(getGroups())
 }

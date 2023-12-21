@@ -6,7 +6,7 @@ const CREATE_EVENT = 'events/CREATE_EVENT'
 const GET_EVENTS_BY_GROUP = 'events/GET_EVENTS_BY_GROUP'
 const GET_EVENT_BY_ID = 'events/GET_EVENT_BY_ID'
 const DELETE_EVENT = 'events/DELETE_EVENT';
-const CREATE_EVENT_IMAGE = 'events/CREATE_EVENT_IMAGE';
+const POST_EVENT_IMAGE = 'events/CREATE_EVENT_IMAGE';
 
 // ACTION CREATORS
 
@@ -48,7 +48,7 @@ export const deleteEventCreator = (eventId) => {
 
 export const postEventImageCreator = (eventId, image) => {
     return {
-        type: CREATE_EVENT_IMAGE,
+        type: POST_EVENT_IMAGE,
         eventId,
         image
     }
@@ -60,6 +60,7 @@ export const getEvents = () => async (dispatch) => {
     const response = await csrfFetch('/api/events', {
         method: 'GET'
     })
+    console.log('hello')
 
     if (response.ok) {
         const events = await response.json()
@@ -163,7 +164,7 @@ const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_EVENTS: {
             const newState = { Events: { ...state.Events }, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
-            action.events.forEach((event) => {
+            action.events.Events.forEach((event) => {
                 newState.allEvents[event.id] = event
             })
             return newState
@@ -188,6 +189,24 @@ const eventsReducer = (state = initialState, action) => {
         case GET_EVENT_BY_ID: {
             const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
             newState.All[action.event.id] = action.event;
+            return newState;
+        }
+        case CREATE_EVENT: {
+            const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.All}};
+            newState.allEvents[action.event.id] = action.event;
+            return newState;
+        }
+        case POST_EVENT_IMAGE: {
+            const newState = { Past: {...state.Past}, Upcoming: {...state.Upcoming}, Events: {...state.Events}, All: {...state.All}};
+
+            return newState;
+
+        }
+        case DELETE_EVENT: {
+            const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}};
+            delete newState.Past[action.eventId];
+            delete newState.Upcoming[action.eventId]
+            delete newState.allEvents[action.eventId];
             return newState;
         }
         default:

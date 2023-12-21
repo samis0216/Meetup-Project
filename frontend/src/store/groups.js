@@ -136,6 +136,7 @@ export const patchGroup = (updatedGroup, groupId) => async (dispatch) => {
 }
 
 const initialState = {Groups: {}}
+
 // REDUCERS
 const groupsReducer = (state = initialState, action) => {
     let newState
@@ -169,6 +170,5 @@ const groupsReducer = (state = initialState, action) => {
             return state
     }
 }
-// const groupsReducer
 
 export default groupsReducer

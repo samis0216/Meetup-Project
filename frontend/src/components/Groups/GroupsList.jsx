@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './GroupsList.css'
 import { getGroups } from '../../store/groups'
-import { getEvents } from '../../store/events'
+import { getEvents, getEventsByGroupId } from '../../store/events'
+import GroupListTile from './GroupListTile'
 
 
 
@@ -15,8 +16,8 @@ export default function GroupsList() {
         dispatch(getGroups())
         dispatch(getEvents())
     }, [dispatch])
-    console.log(groups_initial)
-    const events = useSelector((state) => state.events)
+    const events = useSelector((state) => state.events.allEvents)
+    console.log(events)
     return (
         <div className='main-body'>
             <div className='event-group-nav'>
@@ -28,20 +29,22 @@ export default function GroupsList() {
             </div>
             <div className='groups-list'>
                 {groups_initial && groups_initial.map((group) => (
-                    <div key={group.id}>
-                        <hr />
-                        <Link className='group-links' to={`/groups/${group.id}`}>
-                            <div className='group-container' >
-                                <img src="https://placehold.co/100x50" alt="" className='groupImg' />
-                                <div className='group-desc'>
-                                    <h2>{group.name}</h2>
-                                    <p>{group.city}, {group.state}</p>
-                                    <p>{group.about}</p>
-                                    <p>{events.Events[group.id] ? events.Events[group.id].length : '0'} {events.Events[group.id] && events.Events[group.id].length === 1 ? 'event' : 'events'} • {group.private ? 'Private' : 'Public'}</p>
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
+                    <GroupListTile group={group} groupId={group.id} />
+                    // <div key={group.id}>
+                    //     <hr />
+                    //     <Link className='group-links' to={`/groups/${group.id}`}>
+                    //         <div className='group-container' >
+                    //             <img src="https://placehold.co/100x50" alt="" className='groupImg' />
+                    //             <div className='group-desc'>
+                    //                 <h2>{group.name}</h2>
+                    //                 <p>{group.city}, {group.state}</p>
+                    //                 <p>{group.about}</p>
+
+                    //                 <p>{events[group.id] ? events[group.id].length : '0'} {events[group.id] && events[group.id].length === 1 ? 'event' : 'events'} • {group.private ? 'Private' : 'Public'}</p>
+                    //             </div>
+                    //         </div>
+                    //     </Link>
+                    // </div>
                 ))}
             </div>
         </div>

@@ -9,8 +9,8 @@ export default function EventsList() {
     useEffect(() => {
         dispatch(getEvents())
     }, [dispatch])
-    const events_initial = useSelector((state) => state.events.Events)
-    console.log(events_initial)
+    const events = useSelector((state) => state.events.allEvents)
+    const eventKeys = Object.keys(events)
     return (
         <div className='main-body'>
             <div className='event-group-nav'>
@@ -21,21 +21,22 @@ export default function EventsList() {
                 <p>Events in Meetup</p>
             </div>
             <div className='groups-list'>
-                {events_initial && events_initial.map((event) => (
-                    <div key={event.id}>
+                {events && eventKeys.map((key) => (
+                    <div key={events[key].id}>
                         <hr />
                         <div className='group-container'>
                             <img src="https://placehold.co/100x50" alt="" className='groupImg' />
                             <div className='event-desc'>
-                                <p>{event.endDate}</p>
-                                <h2>{event.name}</h2>
-                                <p>{event.Venue.city}, {event.Venue.state}</p>
+                                <p>{events[key].endDate}</p>
+                                <h2>{events[key].name}</h2>
+                                <p>{events[key].Venue.city}, {events[key].Venue.state}</p>
                             </div>
-                                <p>{event.about}</p>
+                                <p>{events[key].about}</p>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
     )
+    // else dispatch(getEvents())
 }
