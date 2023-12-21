@@ -4,16 +4,26 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getGroups, getOneGroup } from '../../store/groups'
 import { getEventsByGroupId } from '../../store/events'
+import GroupDeleteModal from './DeleteModal/GroupDeleteModal'
 // import GroupEventsTile from './GroupEventsTile.jsx'
 
 export default function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams()
 
+    function updateClick() {
+        navigate(`/groups/${groupId}/edit`);
+    }
+
+    function createEventClick() {
+        navigate(`/groups/${groupId}/events/new`);
+    }
+
     useEffect(() => {
         dispatch(getOneGroup(groupId))
         dispatch(getEventsByGroupId(groupId))
     }, [dispatch])
+
     const groups = useSelector((state) => state.groups.Groups)
     const events = useSelector((state) => state.events)
     const user = useSelector((state) => state.session.user)
@@ -32,11 +42,12 @@ export default function GroupDetails() {
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
                         <p>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.type}</p>
-                        <p>Organized by {group.organizerId === user.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
-                        {group.organizerId === user.id ? <div className='group-buttons-container'>
-                            <button className='crud-buttons'>Create event</button>
-                            <button className='crud-buttons'>Edit</button>
-                            <button className='crud-buttons'>Delete</button>
+                        <p>Organized by {user && group.organizerId === user?.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
+                        {user && group.organizerId === user?.id ? <div className='group-buttons-container'>
+                            <button className='crud-buttons' onClick={createEventClick}>Create event</button>
+                            <button className='crud-buttons' onClick={updateClick}>Edit</button>
+                            <OpenModalMenuItem itemText="Delete" modalComponent={<GroupDeleteModal groupId={groupId} />}
+                        />
                         </div>
                         :
                         <div className='group-buttons-container'>
@@ -49,7 +60,7 @@ export default function GroupDetails() {
             <div className='bottom-body'>
                 <div className='organizer-container'>
                     <h3>Organizer</h3>
-                    <p>{group.organizerId === user.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
+                    <p>{user && group.organizerId === user.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
                 </div>
                 <div className='details-about-container'>
                     <h4>What we're about</h4>
