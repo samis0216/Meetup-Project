@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getGroups, getOneGroup } from '../../store/groups'
 import { getEventsByGroupId } from '../../store/events'
 import GroupDeleteModal from './DeleteModal/GroupDeleteModal'
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 // import GroupEventsTile from './GroupEventsTile.jsx'
 
 export default function GroupDetails() {
