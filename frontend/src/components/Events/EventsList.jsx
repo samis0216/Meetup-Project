@@ -8,7 +8,7 @@ export default function EventsList() {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getEvents())
-    }, [])
+    }, [dispatch])
     const events_initial = useSelector((state) => state.events.Events)
     console.log(events_initial)
     return (

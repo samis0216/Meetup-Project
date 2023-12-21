@@ -14,10 +14,10 @@ export default function GroupForm() {
     const [imageUrl, setImageUrl] = useState('')
     const [submitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})
+
     const grabLocation = (location) => {
         const city = location.split(',')[0]
         const state = location.split(' ')[1]
-        console.log(city, ', ', state)
         return {
             city,
             state

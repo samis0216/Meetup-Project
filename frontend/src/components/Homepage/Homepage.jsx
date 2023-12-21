@@ -35,7 +35,7 @@ export default function Homepage () {
                 </div>
                 <div className='button-boxes'>
                     <img src="https://placehold.co/200x200" />
-                    <h4>Start a new group</h4>
+                    <h4><Link to='/groups/new'>Start a new group</Link></h4>
                     <p>Something for creating group</p>
                 </div>
             </div>
