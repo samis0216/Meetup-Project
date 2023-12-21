@@ -16,12 +16,10 @@ export default function GroupDetails() {
     }, [dispatch])
     const groups = useSelector((state) => state.groups.Groups)
     const events = useSelector((state) => state.events)
-    console.log(events)
+    const user = useSelector((state) => state.session.user)
     const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
     let group
-    if (groups) {
-        group = groups[groupId]
-    }
+    if (groups) group = groups[groupId]
     if (Object.values(groups).length) return (
         <div className='details-main'>
             <div className='breadcrumb-container'>
@@ -34,18 +32,24 @@ export default function GroupDetails() {
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
                         <p>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.type}</p>
-                        <p>Organized by (firstName) (lastName)</p>
-                        <div className='group-buttons-container'>
-                            <button>Join this group</button>
-                            <button>Delete Group</button>
+                        <p>Organized by {group.organizerId === user.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
+                        {group.organizerId === user.id ? <div className='group-buttons-container'>
+                            <button className='crud-buttons'>Create event</button>
+                            <button className='crud-buttons'>Edit</button>
+                            <button className='crud-buttons'>Delete</button>
                         </div>
+                        :
+                        <div className='group-buttons-container'>
+                            <button className='crud-buttons' onClick={()=> {alert('Feature Coming Soon...')}}>Join this Group</button>
+                        </div>
+                        }
                     </div>
                 </div>
             </div>
             <div className='bottom-body'>
                 <div className='organizer-container'>
                     <h3>Organizer</h3>
-                    <p>firstName lastName</p>
+                    <p>{group.organizerId === user.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
                 </div>
                 <div className='details-about-container'>
                     <h4>What we're about</h4>

@@ -1,7 +1,9 @@
+import { useSelector } from 'react-redux'
 import './Homepage.css'
 import { Link } from 'react-router-dom'
 
 export default function Homepage () {
+    const sessionUser = useSelector(state => state.session.user)
     return (
         <div className="home-main-body">
             <div className='home-first-text-container'>
@@ -35,7 +37,7 @@ export default function Homepage () {
                 </div>
                 <div className='button-boxes'>
                     <img src="https://placehold.co/200x200" />
-                    <h4><Link to='/groups/new'>Start a new group</Link></h4>
+                    <h4>{sessionUser ? <Link to='/groups/new'>Start a new group</Link> : 'Start a new group'}</h4>
                     <p>Something for creating group</p>
                 </div>
             </div>

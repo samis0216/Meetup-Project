@@ -18,3 +18,13 @@
 .nav-link-navigation {
     text-decoration: none;
 }
+
+.group-buttons-container {
+    height: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.crud-buttons {
+    align-self: flex-end
+}

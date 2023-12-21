@@ -20,7 +20,7 @@ function Navigation({ isLoaded }) {
             <div className='header'>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Meetup_1.svg" id='meetup-logo' onClick={redirect}/>
                 <div className='new-group-and-login'>
-                    <NavLink className='nav-link-navigation' to='/groups/new'>Start a new group</NavLink>
+                    {sessionUser && <NavLink className='nav-link-navigation' to='/groups/new'>Start a new group</NavLink>}
                     <ul>
                         {isLoaded && (
                             <li>
