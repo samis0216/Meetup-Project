@@ -13,7 +13,7 @@ function GroupDeleteModal({ groupId }) {
     const handleSubmit = () => {
         dispatch(deleteGroup(groupId))
             .then(closeModal)
-            // .then(navigate('/groups'))
+            .then(navigate('/groups'))
     };
 
     const handleCancel = () => {
