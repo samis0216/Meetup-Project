@@ -154,10 +154,6 @@ export const deleteEvent = (eventId) => async (dispatch) => {
     }
 }
 
-
-
-
-
 // REDUCERS
 const initialState = { Events: {}, Past: {}, Upcoming: {}, allEvents: {} }
 const eventsReducer = (state = initialState, action) => {
@@ -188,7 +184,7 @@ const eventsReducer = (state = initialState, action) => {
         }
         case GET_EVENT_BY_ID: {
             const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
-            newState.All[action.event.id] = action.event;
+            newState.allEvents[action.event.id] = action.event;
             return newState;
         }
         case CREATE_EVENT: {
@@ -198,9 +194,7 @@ const eventsReducer = (state = initialState, action) => {
         }
         case POST_EVENT_IMAGE: {
             const newState = { Past: {...state.Past}, Upcoming: {...state.Upcoming}, Events: {...state.Events}, All: {...state.All}};
-
             return newState;
-
         }
         case DELETE_EVENT: {
             const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}};
