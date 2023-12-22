@@ -28,3 +28,7 @@
 .crud-buttons {
     align-self: flex-end
 }
+
+.hidden {
+    display: none;
+}

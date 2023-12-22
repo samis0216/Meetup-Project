@@ -12,7 +12,7 @@ export default function Homepage () {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci eu lobortis elementum nibh tellus molestie nunc non. Lectus vestibulum mattis ullamcorper velit. Nascetur ridiculus mus mauris vitae ultricies leo. Quisque id diam vel quam elementum pulvinar etiam non quam. Nam at lectus urna duis convallis convallis tellus id interdum. Accumsan sit amet nulla facilisi morbi tempus.</p>
                 </div>
                 <div className='img-container'>
-                    <img id='first-img' src="https://placehold.co/325x325" />
+                    <img id='first-img' src="https://secure.meetupstatic.com/next/images/indexPage/irl_event.svg?w=828" />
                 </div>
             </div>
             <div className='second-body-container'>

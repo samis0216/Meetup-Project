@@ -44,7 +44,7 @@ function ProfileButton({ user }) {
             <button onClick={toggleMenu}>
                 <i className="fa-solid fa-user-tie"></i>
             </button>
-            <ul className={ulClassName} ref={ulRef}>
+            {showMenu && <ul className={ulClassName} ref={ulRef}>
                 {user ? (
                     <>
                         <li>{user.username}</li>
@@ -68,7 +68,7 @@ function ProfileButton({ user }) {
                         />
                     </>
                 )}
-            </ul>
+            </ul>}
         </>
     );
 }
