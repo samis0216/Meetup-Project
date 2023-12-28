@@ -1,5 +1,5 @@
 import './GroupDetails.css'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getGroups, getOneGroup } from '../../store/groups'
@@ -11,6 +11,7 @@ import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 export default function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams()
+    const navigate = useNavigate()
 
     function updateClick() {
         navigate(`/groups/${groupId}/edit`);
@@ -46,7 +47,7 @@ export default function GroupDetails() {
                         <p>Organized by {user && group.organizerId === user?.id ? `${user.firstName} ${user.lastName}` : 'firstName lastName'}</p>
                         {user && group.organizerId === user?.id ? <div className='group-buttons-container'>
                             <button className='crud-buttons' onClick={createEventClick}>Create event</button>
-                            <button className='crud-buttons' onClick={updateClick}>Edit</button>
+                            <button className='crud-buttons' onClick={updateClick}>Update</button>
                             <OpenModalMenuItem itemText="Delete" modalComponent={<GroupDeleteModal groupId={groupId} />}
                         />
                         </div>

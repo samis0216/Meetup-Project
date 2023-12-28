@@ -1,3 +1,60 @@
 .main-event-body {
-    border: red solid 1px;
+    width: 100%;
+}
+
+.event-container {
+    background-color: #EEEEEE;
+    padding-top: 10px;
+}
+
+.event-details-container {
+    width: 40%;
+}
+
+.event-group-details {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+    border: #EEEEEE 5px solid;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
+}
+
+.event-container {
+    display: flex;
+    /* border: green 1px solid; */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.event-details {
+    border: #EEEEEE 5px solid;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+}
+
+.event-detail {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.minor-detail {
+    display: flex;
+}
+
+.startend, .minor-detail {
+    color: rgb(156, 156, 156)
+}
+
+.date-container > p, .time-container > p{
+    color: rgb(0, 0, 175);
+}
+
+.bottom-text {
+    background-color: #EEEEEE
 }

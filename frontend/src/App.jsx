@@ -9,6 +9,7 @@ import EventsList from './components/Events/EventsList';
 import GroupDetails from './components/Groups/GroupDetails';
 import GroupForm from './components/Groups/GroupForm';
 import EventDetails from './components/Events/EventDetails';
+import CreateEventForm from './components/Events/CreateEventForm'
 import { Modal } from './context/Modal';
 
 function Layout() {
@@ -58,17 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/groups/:groupId',
         element: <GroupDetails />,
-        // children: [
-        //   {
-        //     path: '/images',
-        //     element:
-        //   },
-        //   {
-        //    path: '/events'
-        // element: <GroupEvents />
-        //    }
-        //
-        // ]
+      },
+      {
+        path: '/groups/:groupId/events/new',
+        element: <CreateEventForm />
       },
       {
         path: '/events',
