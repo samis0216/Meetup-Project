@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet, useParams } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 import Homepage from './components/Homepage/Homepage';
@@ -10,6 +10,7 @@ import GroupDetails from './components/Groups/GroupDetails';
 import GroupForm from './components/Groups/GroupForm';
 import EventDetails from './components/Events/EventDetails';
 import CreateEventForm from './components/Events/CreateEventForm'
+import UpdateGroup from './components/Groups/UpdateGroup'
 import { Modal } from './context/Modal';
 
 function Layout() {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: '/groups/:groupId',
         element: <GroupDetails />,
+      },
+      {
+        path: '/groups/:groupId/edit',
+        element: <UpdateGroup />
       },
       {
         path: '/groups/:groupId/events/new',

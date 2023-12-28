@@ -2,6 +2,10 @@
     width: 100%;
 }
 
+.content-body2 {
+    background-color: #EEEEEE ;
+}
+
 .event-container {
     background-color: #EEEEEE;
     padding-top: 10px;
@@ -45,7 +49,6 @@
 
 .minor-detail {
     display: flex;
-    border: red 1px solid;
     flex-direction: row;
     justify-content: space-between;
 }

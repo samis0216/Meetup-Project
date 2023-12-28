@@ -149,7 +149,7 @@ const groupsReducer = (state = initialState, action) => {
             return newState
         case GET_ONE_GROUP:
             newState = {...state, Groups: {...state.Groups}}
-            newState[action.groupId] = action.group
+            newState.Groups[action.group.id] = action.group
             return newState
         case GET_USER_GROUPS: {
             const newState = {...state, Groups: {...state.Groups, User: {...action.groups}}}
