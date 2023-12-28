@@ -63,12 +63,18 @@ export default function EventDetails() {
                                 </div>
                             </div>
                             <div className='minor-detail'>
-                                <i></i>
-                                <p>{event.price > 0 && `$${event.price}`}</p>
+                                <div>
+
+                                    <i></i>
+                                    <p>{event.price > 0 && `$${event.price}`}</p>
+                                </div>
                             </div>
                             <div className='minor-detail'>
-                                <i></i>
-                                <p>{event.type}</p>
+                                <div className='icon-detail'>
+                                    <i></i>
+                                    <p>{event.type}</p>
+                                </div>
+                                <button id='delete-event-button'>Delete</button>
                             </div>
                         </div>
                     </div>

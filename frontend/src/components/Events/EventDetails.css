@@ -45,6 +45,9 @@
 
 .minor-detail {
     display: flex;
+    border: red 1px solid;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .startend, .minor-detail {
@@ -57,4 +60,8 @@
 
 .bottom-text {
     background-color: #EEEEEE
+}
+
+#delete-event-button {
+    align-self: center
 }
