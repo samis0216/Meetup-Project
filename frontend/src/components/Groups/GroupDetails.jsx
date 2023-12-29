@@ -6,7 +6,7 @@ import { getGroups, getOneGroup } from '../../store/groups'
 import { getEventsByGroupId } from '../../store/events'
 import GroupDeleteModal from './DeleteModal/GroupDeleteModal'
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
-// import GroupEventsTile from './GroupEventsTile.jsx'
+import GroupEventsTile from './GroupEventTiles/GroupEventsTile'
 
 export default function GroupDetails() {
     const dispatch = useDispatch()
@@ -69,9 +69,19 @@ export default function GroupDetails() {
                     <p>{group.about}</p>
                 </div>
                 <div className='upcoming-events-container'>
-                    <h4>Upcoming Events ({events.Upcoming[groupId] && events.Upcoming[groupId].length})</h4>
-                    <div>
-                        {/* <GroupEventsTile /> */}
+                    {events.Upcoming[groupId]?.length ? (<h4>Upcoming Events ({events.Upcoming[groupId] && events.Upcoming[groupId].length})</h4>) : null}
+                    <div className='group-events-tile-container'>
+                        {events.Upcoming[groupId]?.length? events.Upcoming[groupId].map((event) => (
+                            <GroupEventsTile event={event} key={event.id}/>
+                            )) : console.log('no future events')}
+                    </div>
+                </div>
+                <div className='past-events-container'>
+                    {events.Past[groupId]?.length ? (<h4>Past Events ({events.Past[groupId] && events.Past[groupId].length})</h4>): null}
+                    <div className='group-events-tile-container'>
+                        {events.Past[groupId]?.length? events.Past[groupId].map((event) => (
+                            <GroupEventsTile event={event} key={event.id}/>
+                        )) : console.log('no past events')}
                     </div>
                 </div>
             </div>

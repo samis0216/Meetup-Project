@@ -1,11 +1,12 @@
 import './GroupForm.css'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getOneGroup, patchGroup } from '../../store/groups'
 
 export default function GroupForm({groupId}) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(()=> {
         dispatch(getOneGroup(groupId))
@@ -49,7 +50,8 @@ export default function GroupForm({groupId}) {
             private: privacy,
         }
         console.log(newGroup)
-        let group = await dispatch(patchGroup(newGroup))
+        let group = await dispatch(patchGroup(newGroup, groupId))
+
         if (group.errors) {
             console.log(group.errors)
             setErrors(group.errors)
@@ -61,6 +63,8 @@ export default function GroupForm({groupId}) {
         setImageUrl('')
         setPrivacy('')
         setType('')
+
+        navigate(-1)
     }
 
     useEffect(() => {

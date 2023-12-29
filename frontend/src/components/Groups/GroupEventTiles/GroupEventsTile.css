@@ -1,0 +1,14 @@
+.group-event-details {
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    border: white solid 5px;
+    background-color: white;
+    border-radius: 30px;
+    width: 50%;
+}
+
+.group-event-top {
+display: flex;
+justify-content: center;
+}
