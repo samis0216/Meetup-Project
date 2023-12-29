@@ -1,5 +1,10 @@
 .main-event-body {
     width: 100%;
+    background-color: white;
+}
+
+.total-body {
+    background-color: #EEEEEE;
 }
 
 .content-body2 {

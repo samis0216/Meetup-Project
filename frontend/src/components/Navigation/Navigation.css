@@ -9,6 +9,12 @@
     width: 100px;
 }
 
+.login-signup-button-container {
+    display: flex;
+    gap: 10px;
+}
+
+
 .new-group-and-login {
     display: flex;
     justify-content: space-between;

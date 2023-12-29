@@ -19,7 +19,7 @@ export default function EventDetails() {
     try {
         events = useSelector((state) => state.events.allEvents)
         event = events[eventId]
-        user = useSelector((state)=> state.session.user.id)
+        user = useSelector((state) => state.session.user.id)
     } catch {
         dispatch(getEvents())
         dispatch(getEventById(eventId))
@@ -28,13 +28,15 @@ export default function EventDetails() {
         event = events[eventId]
     }
     if (event && event.Group) return (
-        <div className='main-event-body'>
-            <div>
+        <div className='total-body'>
+            <div className='main-event-body'>
                 <div>
-                    &lt;<Link to='/events'>Events</Link>
+                    <div>
+                        &lt;<Link to='/events'>Events</Link>
+                    </div>
+                    <h3>{event.name}</h3>
+                    <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
                 </div>
-                <h3>{event.name}</h3>
-                <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
             </div>
             <div className='content-body2'>
                 <div className='event-container'>
@@ -79,12 +81,12 @@ export default function EventDetails() {
                                         <p>{event.type}</p>
                                     </div>
                                     {event.Group.organizerId === user && <div>
-                                        <button onClick={()=> alert('Update Feature coming soon...')}>Update</button>
+                                        <button onClick={() => alert('Update Feature coming soon...')}>Update</button>
                                         <OpenModalMenuItem
-                                        id='delete-event-button'
-                                        itemText="Delete"
-                                        modalComponent={<DeleteEventConfirmModal eventId={eventId} />}
-                                    />
+                                            id='delete-event-button'
+                                            itemText="Delete"
+                                            modalComponent={<DeleteEventConfirmModal eventId={eventId} />}
+                                        />
                                     </div>}
                                 </div>
                             </div>
@@ -96,6 +98,6 @@ export default function EventDetails() {
                     <p>{event.description}</p>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

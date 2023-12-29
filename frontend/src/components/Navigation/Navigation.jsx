@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import { Modal } from '../../context/Modal';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SIgnupFormModal';
 import './Navigation.css';
 import { useNavigate } from 'react-router-dom'
+import OpenModalMenuItem from './OpenModalMenuItem';
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
@@ -22,11 +24,15 @@ function Navigation({ isLoaded }) {
                 <div className='new-group-and-login'>
                     {sessionUser && <NavLink className='nav-link-navigation' to='/groups/new'>Start a new group</NavLink>}
                     <ul>
-                        {isLoaded && (
-                            <li>
+                        {isLoaded && sessionUser ? (
+
                                 <ProfileButton user={sessionUser} />
-                            </li>
-                        )}
+
+                        ) :
+                        <div className='login-signup-button-container'>
+                            <OpenModalButton className={'login-signup'} modalComponent={<LoginFormModal />} buttonText={'Login'}/>
+                            <OpenModalButton className={'login-signup'} modalComponent={<SignupFormModal />} buttonText={'Sign Up'} />
+                        </div>}
                     </ul>
                 </div>
             </div>
