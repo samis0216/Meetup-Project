@@ -55,6 +55,7 @@ export const getGroups = () => async (dispatch) => {
     if (response.ok) {
         const groups = await response.json()
         dispatch(getGroupsCreator(groups))
+        return groups
 
     } else {
         const errors = await response.json()
@@ -70,6 +71,7 @@ export const getOneGroup = (groupId) => async (dispatch) => {
     if (res.ok) {
         const group = await res.json()
         dispatch(getOneGroupCreator(group))
+        return group
     } else {
         const errors = await response.json()
         return errors
@@ -84,6 +86,7 @@ export const getUserGroups = () => async (dispatch) => {
     if (response.ok) {
         const groups = await response.json();
         dispatch(getUserGroupsCreator(groups.Groups))
+        return groups
     } else {
         const errors = await response.json()
         return errors
@@ -100,6 +103,7 @@ export const postGroup = (newGroup) => async (dispatch) => {
     if (response.ok) {
         const newGroup = await response.json()
         dispatch(postGroupCreator(newGroup))
+        return newGroup
     } else {
         const errors = await response.json();
         return errors
@@ -157,8 +161,8 @@ const groupsReducer = (state = initialState, action) => {
         }
         case CREATE_GROUP:
             newState = {...state, Groups: {...state.Groups}};
-            newState.Groups[action.group.id] = action.group;
-            newState[action.group.id] = action.group
+            newState.Groups[action.newGroup.id] = action.newGroup;
+            newState[action.newGroup.id] = action.newGroup
             return newState
         case DELETE_GROUP: {
             const newState = {...state, Groups: {...state.Groups}}

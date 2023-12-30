@@ -4,6 +4,12 @@
     padding: 20px;
 }
 
+#locationVal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;;
+}
+
 .desc-list {
     display: flex;
 }
@@ -14,4 +20,8 @@
 
 button {
     align-self: flex-start;
+}
+
+.errors {
+    color: red;
 }

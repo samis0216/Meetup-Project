@@ -1,16 +1,18 @@
 import './GroupForm.css'
-import { Link, useParams } from 'react-router-dom'
+// import { Link, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { postGroup } from '../../store/groups'
+import { useNavigate } from 'react-router-dom'
 
 export default function GroupForm() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [location, setLocation] = useState('')
     const [groupName, setGroupName] = useState('')
     const [description, setDescription] = useState('')
-    const [type, setType] = useState('Online')
-    const [privacy, setPrivacy] = useState('Private')
+    const [type, setType] = useState('')
+    const [privacy, setPrivacy] = useState('')
     const [imageUrl, setImageUrl] = useState('')
     const [submitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})
@@ -36,11 +38,13 @@ export default function GroupForm() {
             type,
             private: privacy,
         }
-        console.log(newGroup)
+
         let group = await dispatch(postGroup(newGroup))
-        if (group.errors) {
+        if (await group.errors) {
             console.log(group.errors)
             setErrors(group.errors)
+        } else {
+            navigate(`/groups/${group.id}`)
         }
 
         setDescription('')
@@ -49,6 +53,7 @@ export default function GroupForm() {
         setImageUrl('')
         setPrivacy('')
         setType('')
+
     }
 
     useEffect(() => {
@@ -66,11 +71,11 @@ export default function GroupForm() {
         if (description?.length < 30) {
             newErrors.about = 'Description must be at least 30 characters long';
         }
-        if (groupName) {
+        if (!groupName) {
             newErrors.name = 'Name is required';
         }
         if (!location || location?.split(', ').length <= 1) {
-            newErrors.location = 'Location is required (City, state)';
+            newErrors.location = 'Location is required (City, STATE)';
         }
 
         setErrors(newErrors);
@@ -88,15 +93,17 @@ export default function GroupForm() {
                     <h4>First, set your group's location</h4>
                     <p>Meetup groups meet locally, in person and online. We'll connect you with people
                         in your area, and more can join you online.</p>
-                    {submitted && <span className="errors">{errors.location}</span>}
-                    <input type="text" placeholder='City, STATE' value={location} onChange={(e) => setLocation(e.target.value)} />
+                    <div id='locationVal'>
+                        {submitted && <span className="errors">{errors.location}</span>}
+                        <input type="text" placeholder='City, STATE' value={location} onChange={(e) => setLocation(e.target.value)} />
+                    </div>
                 </div>
                 <div className='form-sections'>
                     <hr />
                     <h4>What will your group's name be?</h4>
                     <p>Choose a name that will give people a clear idea of what the group is about.
                         Feel free to get creative! You can edit this later if you change your mind.</p>
-                        {submitted && <div className="errors">{errors.name}</div>}
+                    {submitted && <div className="errors">{errors.name}</div>}
                     <input type="text" placeholder='What is your group name?' value={groupName} onChange={(e) => setGroupName(e.target.value)} />
                 </div>
                 <div className='form-sections'>
@@ -119,12 +126,14 @@ export default function GroupForm() {
                     <p>Is this an in person or online group?</p>
                     {submitted && <div className="errors">{errors.type}</div>}
                     <select name="" id="" value={type} onChange={(e) => setType(e.target.value)}>
+                        <option value={''} disabled>(select one)</option>
                         <option value="In person">In person</option>
                         <option value="Online">Online</option>
                     </select>
                     <p>Is this group private or public?</p>
                     {submitted && <div className="errors">{errors.private}</div>}
                     <select name="" id="" value={privacy} onChange={(e) => setPrivacy(e.target.value)}>
+                        <option value={''} disabled >(select one)</option>
                         <option value={true}>Private</option>
                         <option value={false}>Public</option>
                     </select>

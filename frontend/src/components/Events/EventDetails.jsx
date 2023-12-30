@@ -11,22 +11,16 @@ export default function EventDetails() {
     const dispatch = useDispatch()
     const { eventId } = useParams()
     useEffect(() => {
-        dispatch(getEventById(eventId))
-    }, [dispatch])
-    let events
-    let event
-    let user
-    try {
-        events = useSelector((state) => state.events.allEvents)
-        event = events[eventId]
-        user = useSelector((state) => state.session.user.id)
-    } catch {
         dispatch(getEvents())
         dispatch(getEventById(eventId))
-        events = useSelector((state) => state.events.allEvents)
-        console.log(events)
-        event = events[eventId]
-    }
+    }, [dispatch])
+    const events = useSelector((state) => state.events.allEvents)
+    console.log(events)
+    const event = events[eventId]
+    console.log(event)
+    const user = useSelector((state) => state.session.user.id)
+    console.log(user)
+
     if (event && event.Group) return (
         <div className='total-body'>
             <div className='main-event-body'>

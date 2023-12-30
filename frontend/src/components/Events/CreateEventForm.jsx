@@ -95,11 +95,10 @@ export default function CreateEventForm() {
         }
 
         if (!newEvent.errors) {
-            let event = await dispatch(postEvent(newEvent, groupId))
-            let imageShit = await dispatch(postEventImage(event?.id, url))
+            const event = await dispatch(postEvent(newEvent, groupId))
+            const imageShit = await dispatch(postEventImage(event.id, url))
             console.log(event, imageShit)
-            dispatch(getEvents())
-            // navigate(`/events/${event?.id}`)
+            navigate(`/events/${event.id}`)
         }
     }
 

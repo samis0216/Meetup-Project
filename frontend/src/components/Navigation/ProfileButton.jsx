@@ -48,7 +48,7 @@ function ProfileButton({ user }) {
         <>
             <div id="profileBtn" onClick={toggleMenu}>
                 <i className="fas fa-user-circle fa-lg" style={{color: 'red'}} />
-                {showMenu ? <i class="fa-solid fa-chevron-up" style={{color: 'grey'}}></i> : <i class="fa-solid fa-chevron-down" style={{color: 'grey'}}></i>}
+                {showMenu ? <i className="fa-solid fa-chevron-up" style={{color: 'grey'}}></i> : <i className="fa-solid fa-chevron-down" style={{color: 'grey'}}></i>}
             </div>
             <div className={ulClassName} ref={ulRef}>
                 {user ? (
