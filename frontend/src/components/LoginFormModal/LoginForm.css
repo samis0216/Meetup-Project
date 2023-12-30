@@ -1,16 +1,19 @@
 .login-form-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    border: 1px solid black;
-    width: 500px;
-    height: 300px;
+    width: 400px;
+    height: 265px;
 
 }
+/*
+.login-form-container > * {
+    font-size: medium;
+} */
 
 input {
-    width: 300px;
+    width: 340px;
 }
 
 form {
@@ -22,14 +25,33 @@ form {
 
 .log-in-button {
     align-self: center;
-    width: 200px;
+    width: 350px;
+    height: 35px;
+    color: white;
+    background-color: #FF595E;
+    box-shadow: 5px 5px black;
 }
 
 label {
     display: flex;
     flex-direction: column;
+    font-size: small;
 }
 
 .error-message {
     color: red;
+    font-size: smaller;
+    margin: 0px;
+}
+
+.demoButton {
+    align-self: center;
+    width: fit-content;
+    height: 30px;
+    border: none;
+    background-color: white;
+}
+
+.demoButton:hover {
+    text-decoration: underline;
 }

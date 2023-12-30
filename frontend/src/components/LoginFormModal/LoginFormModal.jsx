@@ -3,6 +3,7 @@ import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
+import { Link } from 'react-router-dom';
 
 function LoginFormModal() {
     const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function LoginFormModal() {
 
     return (
         <div className='login-form-container'>
-            <h1>Log In</h1>
+            <h2 style={{fontWeight: 400}}>Log In</h2>
             <form onSubmit={handleSubmit}>
                     {errors.credential && (
                         <p className='error-message'>{errors.credential}</p>
@@ -59,10 +60,10 @@ function LoginFormModal() {
                     />
                 </label>
                 <button className='log-in-button' disabled={disabled} type="submit">Log In</button>
-                <button onClick={()=> {
-                    setCredential('samis')
-                    setPassword('testtest')
-                }}>Log in as Demo User</button>
+                <button onClick={(e)=> {
+                    setCredential('Demo-lition')
+                    setPassword('password')
+                }} className='demoButton'>Log in as Demo User</button>
             </form>
         </div>
     );

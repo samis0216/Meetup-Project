@@ -17,7 +17,7 @@ export default function Homepage () {
             </div>
             <div className='second-body-container'>
                 <div className='how-meetup'>
-                    <h3>How Meetup Works</h3>
+                    <h3 style={{fontWeight: 600}}>How Meetup Works</h3>
                     <p className='how-meetup-text'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </p>
@@ -25,23 +25,23 @@ export default function Homepage () {
             </div>
             <div className='third-body-container'>
                 <div className='button-boxes'>
-                    <img src="https://placehold.co/200x200" />
+                    <img className='section3Images' src="https://cdn.vectorstock.com/i/preview-1x/11/61/high-five-salute-concept-friends-hands-union-vector-46211161.jpg" />
                     <h4>
-                        <Link to='/groups'>See all groups</Link></h4>
+                        <Link className='link-headers' to='/groups'>See all groups</Link></h4>
                     <p>Something for Groups</p>
                 </div>
                 <div className='button-boxes'>
-                    <img src="https://placehold.co/200x200" />
-                    <h4><Link to='/events'>Find an event</Link></h4>
+                    <img className='section3Images' src="https://keepn.com/graphics/lpgraphics/landing_pages/free_online_calendar.png" />
+                    <h4 ><Link className='link-headers' to='/events'>Find an event</Link></h4>
                     <p>Something for Events</p>
                 </div>
                 <div className='button-boxes'>
-                    <img src="https://placehold.co/200x200" />
-                    <h4>{sessionUser ? <Link to='/groups/new'>Start a new group</Link> : 'Start a new group'}</h4>
+                    <img className='section3Images' src="https://lordicon.com/icons/wired/lineal/274-male-and-two-female.svg" />
+                    <h4 style={{color: 'grey'}}>{sessionUser ? <Link to='/groups/new' className='link-headers'>Start a new group</Link> : 'Start a new group'}</h4>
                     <p>Something for creating group</p>
                 </div>
             </div>
-            <Link to='/' className='join-meetup'>Join Meetup</Link>
+            {!sessionUser && <Link to='/' className='join-meetup'>Join Meetup</Link>}
         </div>
     )
 }

@@ -54,11 +54,11 @@ function ProfileButton({ user }) {
                 {user ? (
                     <>
                         <p>
-                            <b className="truncateLongTxt">Hello, {user.firstName}</b>
+                            <b className="truncateLongTxt">Hello, {user.username}</b>
                             <i className="truncateLongTxt">{user.email}</i>
                         </p>
                         <div id="manage-group-button">
-                            <NavLink to="/groups/current" onClick={closeMenu}>Manage Groups</NavLink>
+                            <NavLink to="/groups" onClick={closeMenu}>View groups</NavLink>
                         </div>
                         <div onClick={logout}>Log Out</div>
                     </>

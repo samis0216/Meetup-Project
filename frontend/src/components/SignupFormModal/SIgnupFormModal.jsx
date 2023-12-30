@@ -16,10 +16,6 @@ function SignupFormModal() {
     const [disabled, setDisabled] = useState(true)
     const { closeModal } = useModal();
 
-    useEffect(()=> {
-
-    })
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
@@ -47,8 +43,8 @@ function SignupFormModal() {
     };
 
     return (
-        <>
-            <h1>Sign Up</h1>
+        <div className='signupFormContainer'>
+            <h2 style={{fontWeight: 400}}>Sign Up</h2>
             <form onSubmit={handleSubmit}>
                 <label>
                     Email
@@ -112,9 +108,9 @@ function SignupFormModal() {
                 {errors.confirmPassword && (
                     <p>{errors.confirmPassword}</p>
                 )}
-                <button type="submit" disabled={disabled}>Sign Up</button>
+            <button id='submitSignup' type="submit" disabled={disabled}>Sign Up</button>
             </form>
-        </>
+        </div>
     );
 }
 
