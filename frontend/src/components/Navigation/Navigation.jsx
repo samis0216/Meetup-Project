@@ -30,8 +30,8 @@ function Navigation({ isLoaded }) {
 
                         ) :
                         <div className='login-signup-button-container'>
-                            <OpenModalButton className={'login-signup'} modalComponent={<LoginFormModal />} buttonText={'Login'}/>
-                            <OpenModalButton className={'login-signup'} modalComponent={<SignupFormModal />} buttonText={'Sign Up'} />
+                            <OpenModalMenuItem className={'login-signup'} modalComponent={<LoginFormModal />} itemText={'Login'}/>
+                            <OpenModalMenuItem className={'login-signup'} modalComponent={<SignupFormModal />} itemText={'Sign Up'} />
                         </div>}
                     </ul>
                 </div>

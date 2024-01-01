@@ -32,6 +32,10 @@ form {
     box-shadow: 5px 5px black;
 }
 
+.log-in-button:disabled {
+    background-color: lightgrey;
+}
+
 label {
     display: flex;
     flex-direction: column;

@@ -29,3 +29,7 @@ form {
     width: 310px;
     padding: 5px;
 }
+
+#submitSignup:disabled {
+    background-color: lightgrey;
+}

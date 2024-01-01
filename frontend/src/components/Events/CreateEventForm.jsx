@@ -51,7 +51,7 @@ export default function CreateEventForm() {
             newErrors.name = 'Name must be between 60 and 3 characters';
         }
         if (name?.length < 3) {
-            newErrors.name = 'Name must be 3 character or'
+            newErrors.name = 'Name must be 3 character or more'
         }
         if (!price) {
             newErrors.price = 'Price is required';
@@ -106,6 +106,7 @@ export default function CreateEventForm() {
         <div>
             <div>
                 <h2>Create an event for {group.name}</h2>
+                {submitted && <div className="errors">{errors.name}</div>}
                 <p>What is the name of your event?</p>
                 <input type="text" placeholder="Event Name" onChange={(e) => setName(e.target.value)} />
             </div>

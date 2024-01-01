@@ -14,11 +14,14 @@ export default function GroupForm({groupId}) {
 
     console.log(groupId)
     const group = useSelector(state => state.groups.Groups[groupId])
+    const user = useSelector(state => state.session.user)
     console.log(group)
 
     if(!group) {
         dispatch(getOneGroup(groupId))
     }
+
+    if(user?.id !== group?.organizerId) navigate('/')
 
     const [location, setLocation] = useState(`${group.city}, ${group.state}`)
     const [groupName, setGroupName] = useState(group.name)

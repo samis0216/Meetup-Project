@@ -7,7 +7,6 @@ import DeleteEventConfirmModal from './DeleteEventConfirmModal'
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 
 export default function EventDetails() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { eventId } = useParams()
     useEffect(() => {
@@ -21,7 +20,7 @@ export default function EventDetails() {
     const user = useSelector((state) => state.session.user.id)
     console.log(user)
 
-    if (event && event.Group) return (
+    if (event && event?.Group) return (
         <div className='total-body'>
             <div className='main-event-body'>
                 <div>
@@ -94,4 +93,7 @@ export default function EventDetails() {
             </div>
         </div >
     )
+    else {
+        dispatch(getEventById(eventId))
+    }
 }

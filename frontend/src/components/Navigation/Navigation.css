@@ -11,7 +11,8 @@
 
 .login-signup-button-container {
     display: flex;
-    gap: 10px;
+    gap: 30px;
+    padding-right: 10px;
 }
 
 
