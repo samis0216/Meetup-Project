@@ -1,22 +1,22 @@
 import './GroupForm.css'
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getOneGroup, patchGroup } from '../../store/groups'
 
-export default function GroupForm({groupId}) {
+export default function GroupForm({ groupId }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getOneGroup(groupId))
     }, [dispatch])
 
     const group = useSelector(state => state.groups.Groups[groupId])
     const user = useSelector(state => state.session.user)
-    if(user?.id !== group?.organizerId) navigate('/')
+    if (user?.id !== group?.organizerId) navigate('/')
 
-    if(!group) {
+    if (!group) {
         dispatch(getOneGroup(groupId))
     }
 
@@ -92,16 +92,16 @@ export default function GroupForm({groupId}) {
         setErrors(newErrors);
     }, [submitted, type, privacy, imageUrl, description, groupName, location])
 
-    if(group && (user.id === group.Organizer.id)) return (
+    if (group && (user.id === group.Organizer.id)) return (
         <div className='group-form-body'>
             <div>
-                <p>UPDATE YOUR GROUPS INFORMATION</p>
-                <h4>We'll walk you through a few steps to update your group's information</h4>
+                <p style={{ color: 'teal' }}>UPDATE YOUR GROUPS INFORMATION</p>
+                <h2 className='questions'>We'll walk you through a few steps to update your group's information</h2>
             </div>
             <form onSubmit={onSubmit}>
                 <div className='form-sections'>
                     <hr />
-                    <h4>First, set your group's location</h4>
+                    <h2 className='questions'>First, set your group's location</h2>
                     <p>Meetup groups meet locally, in person and online. We'll connect you with people
                         in your area, and more can join you online.</p>
                     {submitted && <span className="errors">{errors.location}</span>}
@@ -109,15 +109,15 @@ export default function GroupForm({groupId}) {
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>What will your group's name be?</h4>
+                    <h2 className='questions'>What is the name of your group?</h2>
                     <p>Choose a name that will give people a clear idea of what the group is about.
                         Feel free to get creative!</p>
-                        {submitted && <div className="errors">{errors.name}</div>}
+                    {submitted && <div className="errors">{errors.name}</div>}
                     <input type="text" placeholder={groupName} value={groupName} onChange={(e) => setGroupName(e.target.value)} />
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>Now describe what your group will be about</h4>
+                    <h2 className='questions'>Now describe what your group will be about</h2>
                     <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
                     <div className='desc-list'>
                         <ol>
@@ -127,11 +127,11 @@ export default function GroupForm({groupId}) {
                         </ol>
                     </div>
                     {submitted && <div className="errors">{errors.about}</div>}
-                    <textarea placeholder='Please write at least 30 characters' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    <textarea rows={15} cols={60} placeholder='Please write at least 30 characters' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>Final steps...</h4>
+                    <h2 className='questions'>Final steps...</h2>
                     <p>Is this an in person or online group?</p>
                     {submitted && <div className="errors">{errors.type}</div>}
                     <select name="" id="" value={type} onChange={(e) => setType(e.target.value)}>

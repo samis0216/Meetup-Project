@@ -57,7 +57,13 @@
     border-radius: 20px;
     background-color: rgb(255, 255, 255);
     padding: 20px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
 }
+
+
 
 .event-detail {
     display: flex;

@@ -45,8 +45,13 @@ function SignupFormModal() {
 
     useEffect(() => {
         let boolean = true
-        if (username.length >= 4 && password.length >= 6 && email.length > 0 && firstName.length > 0 && lastName.length > 0 && confirmPassword.length > 0) {
-            boolean = false
+        if (username.length >= 4 &&
+            password.length >= 6 &&
+            email.length > 0 &&
+            firstName.length > 0 &&
+            lastName.length > 0 &&
+            confirmPassword.length > 0) {
+                boolean = false
         }
 
         setDisabled(boolean);

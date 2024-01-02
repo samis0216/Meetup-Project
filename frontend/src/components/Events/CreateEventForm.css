@@ -1,0 +1,26 @@
+
+.event-create-body {
+    padding: 10px 550px;
+
+}
+
+.cap-q {
+    display: flex;
+    align-items: center;
+}
+
+#price-container {
+    display: flex;
+    align-items: center;
+    gap: 2px    ;
+}
+
+.calendar-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px   ;
+}
+
+#event-description-text {
+    margin-bottom: 10px;
+}

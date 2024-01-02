@@ -34,8 +34,10 @@ export default function GroupDetails() {
 
     let group
     let groupImage;
+    let arr;
     if (groups) group = groups[groupId]
-    const arr = group?.GroupImages? group.GroupImages[0] : null
+    if(group) arr = group?.GroupImages? group.GroupImages : null
+    console.log('group image', group)
     arr? groupImage = arr.url : null
     if (Object.values(groups).length) return (
         <div className='details-main'>
@@ -53,7 +55,7 @@ export default function GroupDetails() {
                         {user && group.organizerId === user?.id ? <div className='group-buttons-container'>
                             <button className='crud-buttons' onClick={createEventClick}>Create event</button>
                             <button className='crud-buttons' onClick={updateClick}>Update</button>
-                            <OpenModalButton className='crud-buttons' buttonText="Delete" modalComponent={<GroupDeleteModal groupId={groupId} />}
+                            <OpenModalButton id='crud-buttons' buttonText="Delete" modalComponent={<GroupDeleteModal groupId={groupId} />}
                             />
                         </div>
                             :

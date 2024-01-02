@@ -14,12 +14,13 @@ export default function GroupEventsTile({ event }) {
 
 
     const eventAbout = useSelector(state => state.events.allEvents[eventId])
-    console.log(eventAbout)
+
+    console.log(event)
     if (eventAbout) return (
         <Link to={`/events/${event.id}`} className='event-Link'>
             <div className="group-event-details">
                 <div className="group-event-top">
-                    <img src={"cool.jpeg"} alt="" className="eventImage-group" />
+                    <img src={event.previewImage} alt="" className="eventImage-group" />
                     {/* event.previewImage} */}
                     <div>
                         <p style={{ color: 'teal' }}>{event.startDate.substring(0, 10)} {event.startDate.substring(11, 16)}</p>
