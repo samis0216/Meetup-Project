@@ -5,7 +5,6 @@ const GET_GROUPS = 'groups/GET_GROUPS'
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP'
 const GET_USER_GROUPS = 'groups/GET_USER_GROUPS'
 const CREATE_GROUP = 'groups/CREATE_GROUP'
-const PATCH_GROUP = 'groups/EDIT_GROUP'
 const DELETE_GROUP = 'groups/DELETE_GROUP'
 
 // ACTION CREATORS
