@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postGroup } from '../../store/groups'
 import { useNavigate, useParams } from 'react-router-dom'
+import { createGroupImage } from '../../store/groupImages'
 
 export default function GroupForm() {
     const navigate = useNavigate()
@@ -40,6 +41,8 @@ export default function GroupForm() {
         }
 
         let group = await dispatch(postGroup(newGroup))
+        let groupImage =  await dispatch(createGroupImage(imageUrl, group.id))
+        console.log(groupImage)
         if (await group.errors) {
             console.log(group.errors)
             setErrors(group.errors)
@@ -65,7 +68,7 @@ export default function GroupForm() {
         if (privacy === '') {
             newErrors.private = 'Visibility Type is required';
         }
-        if ((!imageUrl?.endsWith('.png') && !imageUrl?.endsWith('.PNG') && !imageUrl?.endsWith('.jpg') && !imageUrl?.endsWith('.JPG') && !imageUrl?.endsWith('.jpeg') && !imageUrl?.endsWith('.JPEG')) && imageUrl) {
+        if (!imageUrl || (!imageUrl?.endsWith('.png') && !imageUrl?.endsWith('.PNG') && !imageUrl?.endsWith('.jpg') && !imageUrl?.endsWith('.JPG') && !imageUrl?.endsWith('.jpeg') && !imageUrl?.endsWith('.JPEG')) && imageUrl) {
             newErrors.image = 'Image URL must end in .png, .jpg, or .jpeg';
         }
         if (description?.length < 30) {
@@ -84,13 +87,13 @@ export default function GroupForm() {
     return (
         <div className='group-form-body'>
             <div>
-                <p>BECOME AN ORGANIZER</p>
-                <h4>We'll walk you through a few steps to build your local community</h4>
+                <p style={{color: 'teal'}}>BECOME AN ORGANIZER</p>
+                <h2 className='questions'>We'll walk you through a few steps to build your local community</h2>
             </div>
             <form onSubmit={onSubmit}>
                 <div className='form-sections'>
                     <hr />
-                    <h4>First, set your group's location</h4>
+                    <h2  className='questions'>First, set your group's location</h2>
                     <p>Meetup groups meet locally, in person and online. We'll connect you with people
                         in your area, and more can join you online.</p>
                     <div id='locationVal'>
@@ -100,7 +103,7 @@ export default function GroupForm() {
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>What will your group's name be?</h4>
+                    <h2 className='questions'>What will your group's name be?</h2>
                     <p>Choose a name that will give people a clear idea of what the group is about.
                         Feel free to get creative! You can edit this later if you change your mind.</p>
                     {submitted && <div className="errors">{errors.name}</div>}
@@ -108,7 +111,7 @@ export default function GroupForm() {
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>Now describe what your group will be about</h4>
+                    <h2  className='questions'>Now describe what your group will be about</h2>
                     <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
                     <div className='desc-list'>
                         <ol>
@@ -118,11 +121,11 @@ export default function GroupForm() {
                         </ol>
                     </div>
                     {submitted && <div className="errors">{errors.about}</div>}
-                    <textarea placeholder='Please write at least 30 characters' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    <textarea rows={15} cols={60} className='group-description-area' placeholder='Please write at least 30 characters' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h4>Final steps...</h4>
+                    <h2  className='questions'>Final steps...</h2>
                     <p>Is this an in person or online group?</p>
                     {submitted && <div className="errors">{errors.type}</div>}
                     <select name="" id="" value={type} onChange={(e) => setType(e.target.value)}>

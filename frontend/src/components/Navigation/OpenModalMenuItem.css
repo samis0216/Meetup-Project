@@ -2,5 +2,7 @@
 .loginAndSignup {
     border: none;
     background-color: white;
+    color: black;
     font-size: medium;
+    box-shadow: none;
 }

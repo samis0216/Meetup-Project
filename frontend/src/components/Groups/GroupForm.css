@@ -1,7 +1,7 @@
 .group-form-body {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 200px;
 }
 
 #locationVal {
@@ -20,8 +20,24 @@
 
 button {
     align-self: flex-start;
+    background-color: #CF2A27;
+    color: white;
+    box-shadow: 2px 2px black;
+    padding: 7px 15px;
 }
+
+input, select, textarea  {
+    border-color: black;
+}
+
+
+
 
 .errors {
     color: red;
+    padding: 2px;
+}
+
+.questions {
+    font-weight: 500;
 }

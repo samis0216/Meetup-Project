@@ -30,10 +30,13 @@ export default function GroupDetails() {
     const events = useSelector((state) => state.events)
     const user = useSelector((state) => state.session.user)
     const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
-    let group
 
+
+    let group
+    let groupImage;
     if (groups) group = groups[groupId]
-    console.log(group)
+    const arr = group?.GroupImages? group.GroupImages[0] : null
+    arr? groupImage = arr.url : null
     if (Object.values(groups).length) return (
         <div className='details-main'>
             <div className='top-body'>
@@ -41,7 +44,7 @@ export default function GroupDetails() {
                     &lt; <Link to='/groups'>Groups</Link>
                 </div>
                 <div className='top-group-container'>
-                    <img src={group.previewImage} alt="" style={{ width: '700px', height: '400px' }} />
+                    <img src={groupImage} alt="" style={{ width: '700px', height: '400px' }} />
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p className='grey-text'>{group.city}, {group.state}</p>

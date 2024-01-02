@@ -159,14 +159,16 @@ const initialState = { Events: {}, Past: {}, Upcoming: {}, allEvents: {} }
 const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_EVENTS: {
-            const newState = { Events: { ...state.Events }, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
+            const newState = { Events: { ...state.Events }, Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, allEvents: { ...state.allEvents } }
+
             action.events.Events.forEach((event) => {
                 newState.allEvents[event.id] = event
             })
+
             return newState
         }
         case GET_EVENTS_BY_GROUP: {
-            const newState = { Events: { ...state.Events }, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
+            const newState = { Events: { ...state.Events }, Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, allEvents: { ...state.allEvents } }
             if (action.events.length) {
                 newState.Events[action.groupId] = action.events;
             } else {
@@ -183,21 +185,21 @@ const eventsReducer = (state = initialState, action) => {
             return newState;
         }
         case GET_EVENT_BY_ID: {
-            const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}}
+            const newState = { Events: { ...state.Events }, Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, allEvents: { ...state.allEvents } }
             newState.allEvents[action.event.id] = action.event;
             return newState;
         }
         case CREATE_EVENT: {
-            const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}};
+            const newState = { Events: { ...state.Events }, Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, allEvents: { ...state.allEvents } };
             newState.allEvents[action.event.id] = action.event;
             return newState;
         }
         case POST_EVENT_IMAGE: {
-            const newState = { Past: {...state.Past}, Upcoming: {...state.Upcoming}, Events: {...state.Events}, allEvents: {...state.allEvents}};
+            const newState = { Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, Events: { ...state.Events }, allEvents: { ...state.allEvents } };
             return newState;
         }
         case DELETE_EVENT: {
-            const newState = { Events: {...state.Events}, Past: {...state.Past}, Upcoming: {...state.Upcoming}, allEvents: {...state.allEvents}};
+            const newState = { Events: { ...state.Events }, Past: { ...state.Past }, Upcoming: { ...state.Upcoming }, allEvents: { ...state.allEvents } };
             delete newState.Past[action.eventId];
             delete newState.Upcoming[action.eventId]
             delete newState.allEvents[action.eventId];
