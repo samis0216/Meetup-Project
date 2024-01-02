@@ -23,7 +23,7 @@ export default function GroupEventsTile({ event }) {
                     <img src={event.previewImage} alt="" className="eventImage-group" />
                     {/* event.previewImage} */}
                     <div>
-                        <p style={{ color: 'teal' }}>{event.startDate.substring(0, 10)} {event.startDate.substring(11, 16)}</p>
+                        <p style={{ color: 'teal' }}>{event.startDate.substring(0, 10)} &#183; {event.startDate.substring(11, 16)}</p>
                         <h4>{event.name}</h4>
                         <p style={{ color: '#999999' }}>{event.Venue.city}, {event.Venue.state}</p>
                     </div>
