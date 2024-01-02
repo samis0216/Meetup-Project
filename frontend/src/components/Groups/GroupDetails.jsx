@@ -47,9 +47,8 @@ export default function GroupDetails() {
                     &lt; <Link to='/groups'>Groups</Link>
                 </div>
                 <div className='top-group-container'>
-                    <div style={{width: '700px', height: '400px'}}>
-                        <img src={group?.previewImage} alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
-                    </div>
+                    <img src={group?.GroupImages?.find((image) => image.preview === true)?.url} alt="" style={{ width: '700px', height: '400px' }} />
+
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p className='grey-text'>{group.city}, {group.state}</p>
