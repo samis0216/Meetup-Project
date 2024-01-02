@@ -24,8 +24,8 @@ export default function EventsListTile({ events, keys }) {
             <hr />
             <Link to={`/events/${events[key].id}`} className='event-link'>
                 <div className='event-list-container'>
-                    <div style={{width:400, height: 250}}>
-                        <img src={imageUrl} alt="" className='groupImg' style={{maxWidth: '100%'}}/>
+                    <div>
+                        <img src={imageUrl} alt="" className='groupImg' style={{width:400, height: 250}}/>
                     </div>
                         <div className='event-desc'>
                             <p style={{color: 'teal'}}>{events[key].endDate.substring(0, 10)} &#183; {events[key].endDate.substring(11, 16)}</p>

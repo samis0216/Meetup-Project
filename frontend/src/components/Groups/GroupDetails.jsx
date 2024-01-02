@@ -97,7 +97,4 @@ export default function GroupDetails() {
             </div>
         </div>
     )
-    else {
-        dispatch(getOneGroup(groupId))
-    }
 }
