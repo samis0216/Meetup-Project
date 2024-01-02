@@ -1,14 +1,22 @@
 .main-event-body {
     width: 100%;
     background-color: white;
+    padding: 10px 250px;
+}
+
+.big-image {
+    width: 700px;
+    height: 400px;
 }
 
 .total-body {
     background-color: #EEEEEE;
+    width: fit-content;
 }
 
 .content-body2 {
     background-color: #EEEEEE ;
+    padding: 10px 250px;
 }
 
 .event-container {
@@ -20,11 +28,16 @@
     width: 40%;
 }
 
+.event-group-img {
+    width: 110px;
+    height: 75px;
+}
 .event-group-details {
     display: flex;
-    justify-content: space-around;
-    padding: 5px;
+    padding: 10px 20px;
     border: #EEEEEE 5px solid;
+    align-items: center;
+    gap: 10px;
     border-radius: 20px;
     background-color: rgb(255, 255, 255);
 }
@@ -47,9 +60,17 @@
 
 .event-detail {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
+}
+
+.icon-detail {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+
 }
 
 .minor-detail {
@@ -58,7 +79,7 @@
     justify-content: space-between;
 }
 
-.startend, .minor-detail {
+.startend, .minor-detail, .minor-detail2 {
     color: rgb(156, 156, 156)
 }
 
@@ -72,4 +93,26 @@
 
 #delete-event-button {
     align-self: center
+}
+
+.crud-event {
+    display: flex;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.minor-detail2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.update-event-button {
+    width: 100px;
+    height: 30px;
+    align-self: flex-end;
+    background-color: grey;
+    color: white;
+    box-shadow: black 2px 2px ;
 }

@@ -1,6 +1,6 @@
 .groupImg {
-    width: 275px;
-    height: 210px ;
+    width: 400px;
+    height: 250px ;
 }
 
 .group-name-list {
@@ -9,4 +9,17 @@
 
 .group-about-list {
     width: 100%;
+}
+
+.group-desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.group-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
