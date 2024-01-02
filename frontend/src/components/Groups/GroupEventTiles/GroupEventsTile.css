@@ -25,6 +25,6 @@
 }
 
 .eventImage-group {
-    width: 200px;
-    height: 150px;
+    max-width: 200px;
+    max-height: 150px;
 }

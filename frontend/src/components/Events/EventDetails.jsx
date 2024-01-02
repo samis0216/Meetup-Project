@@ -40,7 +40,7 @@ export default function EventDetails() {
                     </div>
                     <div className='event-details-container'>
                         <div className='event-group-details'>
-                            <img src={groupImg} alt="" style={{ width: 110, height: 75 }} />
+                            <img src={groupImg} alt="group image" style={{ maxWidth: 110, maxHeight: 75 }} />
                             <div>
                                 <h4>{event.Group.name}</h4>
                                 <p>{event.Group.private ? 'Private' : 'Public'}</p>

@@ -37,8 +37,8 @@ export default function GroupDetails() {
     let arr;
     if (groups) group = groups[groupId]
     if(group) arr = group?.GroupImages? group.GroupImages : null
-    console.log('group image', group)
-    arr? groupImage = arr.url : null
+    if(arr) groupImage = arr.url
+
     if (Object.values(groups).length) return (
         <div className='details-main'>
             <div className='top-body'>
@@ -46,7 +46,7 @@ export default function GroupDetails() {
                     &lt; <Link to='/groups'>Groups</Link>
                 </div>
                 <div className='top-group-container'>
-                    <img src={groupImage} alt="" style={{ width: '700px', height: '400px' }} />
+                    <img src={groupImage} alt="" style={{ maxWidth: '700px', maxHeight: '400px' }} />
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p className='grey-text'>{group.city}, {group.state}</p>

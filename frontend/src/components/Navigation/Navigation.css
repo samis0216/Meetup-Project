@@ -39,3 +39,7 @@
 .hidden {
     display: none;
 }
+
+.nav-link-navigation {
+    color: teal;
+}

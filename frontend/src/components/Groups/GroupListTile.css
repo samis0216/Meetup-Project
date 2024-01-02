@@ -1,6 +1,6 @@
 .groupImg {
-    width: 400px;
-    height: 250px ;
+    max-width: 400px;
+    max-height: 250px ;
 }
 
 .group-name-list {
