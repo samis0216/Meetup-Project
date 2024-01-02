@@ -72,7 +72,7 @@ export const getOneGroup = (groupId) => async (dispatch) => {
         dispatch(getOneGroupCreator(group))
         return group
     } else {
-        const errors = await response.json()
+        const errors = await res.json()
         return errors
     }
 }

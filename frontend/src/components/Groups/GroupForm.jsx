@@ -1,9 +1,9 @@
 import './GroupForm.css'
 // import { Link, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { postGroup } from '../../store/groups'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { createGroupImage } from '../../store/groupImages'
 
 export default function GroupForm() {
@@ -88,13 +88,13 @@ export default function GroupForm() {
         <div className='group-form-body'>
             <div>
                 <p style={{color: 'teal'}}>BECOME AN ORGANIZER</p>
-                <h2 className='questions'>We'll walk you through a few steps to build your local community</h2>
+                <h2 className='questions'>We&apos;ll walk you through a few steps to build your local community</h2>
             </div>
             <form onSubmit={onSubmit}>
                 <div className='form-sections'>
                     <hr />
-                    <h2  className='questions'>First, set your group's location</h2>
-                    <p>Meetup groups meet locally, in person and online. We'll connect you with people
+                    <h2  className='questions'>First, set your group&apos;s location</h2>
+                    <p>Meetup groups meet locally, in person and online. We&apos;ll connect you with people
                         in your area, and more can join you online.</p>
                     <div id='locationVal'>
                         {submitted && <span className="errors">{errors.location}</span>}
@@ -103,7 +103,7 @@ export default function GroupForm() {
                 </div>
                 <div className='form-sections'>
                     <hr />
-                    <h2 className='questions'>What will your group's name be?</h2>
+                    <h2 className='questions'>What will your group&apos;s name be?</h2>
                     <p>Choose a name that will give people a clear idea of what the group is about.
                         Feel free to get creative! You can edit this later if you change your mind.</p>
                     {submitted && <div className="errors">{errors.name}</div>}
@@ -112,10 +112,10 @@ export default function GroupForm() {
                 <div className='form-sections'>
                     <hr />
                     <h2  className='questions'>Now describe what your group will be about</h2>
-                    <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                    <p>People will see this when we promote your group, but you&apos;ll be able to add to it later, too.</p>
                     <div className='desc-list'>
                         <ol>
-                            <li>What's the purpose of the group?</li>
+                            <li>What&apos;s the purpose of the group?</li>
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>

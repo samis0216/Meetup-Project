@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './GroupsList.css'
 import { getGroups } from '../../store/groups'
-import { getEvents, getEventsByGroupId } from '../../store/events'
+import { getEvents} from '../../store/events'
 import GroupListTile from './GroupListTile'
 
 
@@ -31,7 +31,7 @@ export default function GroupsList() {
                 </div>
                 <div className='groups-list'>
                     {groups_initial && groups_initial.map((group) => (
-                        <GroupListTile group={group} groupId={group.id} />
+                        <GroupListTile group={group} groupId={group.id} key={group.id}/>
                     ))}
                 </div>
             </div>

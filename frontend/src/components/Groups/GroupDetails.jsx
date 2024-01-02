@@ -2,7 +2,7 @@ import './GroupDetails.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGroups, getOneGroup } from '../../store/groups'
+import { getOneGroup } from '../../store/groups'
 import { getEventsByGroupId } from '../../store/events'
 import GroupDeleteModal from './DeleteModal/GroupDeleteModal'
 import OpenModalButton from '../OpenModalButton/OpenModalButton'
@@ -72,7 +72,7 @@ export default function GroupDetails() {
                     <p className='grey-text'>{group?.Organizer ? `${group.Organizer.firstName} ${group.Organizer.lastName}` : 'firstName lastName'}</p>
                 </div>
                 <div className='details-about-container'>
-                    <h4>What we're about</h4>
+                    <h4>What we&apos;re about</h4>
                     <p>{group.about}</p>
                 </div>
                 <div className='upcoming-events-container'>

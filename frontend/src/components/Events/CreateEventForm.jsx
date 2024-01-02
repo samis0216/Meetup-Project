@@ -14,7 +14,6 @@ export default function CreateEventForm() {
     const [endDate, setEndDate] = useState('');
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
-    const [venueId, setVenueId] = useState(1);
     const [errors, setErrors] = useState({});
     // const [preview, setPreview] = useState(false);
     const [capacity, setCapacity] = useState(100);
@@ -81,7 +80,7 @@ export default function CreateEventForm() {
         setSubmitted(true)
 
         const newEvent = {
-            venueId,
+            venueId: 1,
             name,
             type,
             capacity,
@@ -97,7 +96,7 @@ export default function CreateEventForm() {
 
         if (!newEvent.errors) {
             const event = await dispatch(postEvent(newEvent, groupId))
-            const imageShit = await dispatch(postEventImage(event.id, url))
+            await dispatch(postEventImage(event.id, url))
             navigate(`/events/${event.id}`)
         }
     }
@@ -159,13 +158,13 @@ export default function CreateEventForm() {
                 <p>When does your event start?</p>
                 <div className="calendar-entry">
                     <input type="datetime-local" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                    <i class="fa-regular fa-calendar-days"></i>
+                    <i className="fa-regular fa-calendar-days"></i>
                 </div>
                 {submitted && <div className="errors">{errors.endDate}</div>}
                 <p>When does your event end?</p>
                 <div className="calendar-entry">
                     <input type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                    <i class="fa-regular fa-calendar-days"></i>
+                    <i className="fa-regular fa-calendar-days"></i>
                 </div>
                 <hr />
                 <div>

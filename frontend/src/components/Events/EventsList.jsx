@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './EventsList.css'
 import { getEvents } from '../../store/events'
@@ -24,7 +24,7 @@ export default function EventsList() {
                 </div>
                 <div className='groups-list'>
                     {events && eventKeys.map((key) => (
-                        <EventsListTile events={events} keys={key} />
+                        <EventsListTile events={events} keys={key} key={key} />
                     ))}
                 </div>
             </div>

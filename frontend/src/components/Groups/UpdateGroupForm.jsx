@@ -96,13 +96,13 @@ export default function GroupForm({ groupId }) {
         <div className='group-form-body'>
             <div>
                 <p style={{ color: 'teal' }}>UPDATE YOUR GROUPS INFORMATION</p>
-                <h2 className='questions'>We'll walk you through a few steps to update your group's information</h2>
+                <h2 className='questions'>We&apos;ll walk you through a few steps to update your group&apos;s information</h2>
             </div>
             <form onSubmit={onSubmit}>
                 <div className='form-sections'>
                     <hr />
-                    <h2 className='questions'>First, set your group's location</h2>
-                    <p>Meetup groups meet locally, in person and online. We'll connect you with people
+                    <h2 className='questions'>First, set your group&apos;s location</h2>
+                    <p>Meetup groups meet locally, in person and online. We&apos;ll connect you with people
                         in your area, and more can join you online.</p>
                     {submitted && <span className="errors">{errors.location}</span>}
                     <input type="text" placeholder={`${group.city}, ${group.state}`} value={location} onChange={(e) => setLocation(e.target.value)} />
@@ -118,10 +118,10 @@ export default function GroupForm({ groupId }) {
                 <div className='form-sections'>
                     <hr />
                     <h2 className='questions'>Now describe what your group will be about</h2>
-                    <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                    <p>People will see this when we promote your group, but you&apos;ll be able to add to it later, too.</p>
                     <div className='desc-list'>
                         <ol>
-                            <li>What's the purpose of the group?</li>
+                            <li>What&apos;s the purpose of the group?</li>
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>

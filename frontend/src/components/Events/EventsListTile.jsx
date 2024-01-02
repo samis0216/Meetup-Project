@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import './EventsListTile.css'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch} from "react-redux"
 import { useEffect } from "react"
 import { getEventById } from "../../store/events"
 
