@@ -23,7 +23,7 @@ export default function DeleteEventConfirmModal({ eventId }) {
         closeModal()
 
         dispatch(deleteEvent(eventId))
-            .then(navigate('/events'))
+            .then(navigate(`/groups/${groupId}`))
     };
 
     const handleCancel = () => {

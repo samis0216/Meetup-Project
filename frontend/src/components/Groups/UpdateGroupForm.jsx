@@ -14,12 +14,11 @@ export default function GroupForm({groupId}) {
 
     const group = useSelector(state => state.groups.Groups[groupId])
     const user = useSelector(state => state.session.user)
+    if(user?.id !== group?.organizerId) navigate('/')
 
     if(!group) {
         dispatch(getOneGroup(groupId))
     }
-
-    if(user?.id !== group?.organizerId) navigate('/')
 
     const [location, setLocation] = useState(`${group.city}, ${group.state}`)
     const [groupName, setGroupName] = useState(group.name)
@@ -93,7 +92,7 @@ export default function GroupForm({groupId}) {
         setErrors(newErrors);
     }, [submitted, type, privacy, imageUrl, description, groupName, location])
 
-    if(group) return (
+    if(group && (user.id === group.Organizer.id)) return (
         <div className='group-form-body'>
             <div>
                 <p>UPDATE YOUR GROUPS INFORMATION</p>
