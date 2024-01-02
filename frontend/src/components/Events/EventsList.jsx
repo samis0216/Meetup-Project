@@ -20,7 +20,7 @@ export default function EventsList() {
                         <h4 className='nav-links' id='current-view'>Events</h4>
                         <Link className='nav-links' to='/groups'>Groups</Link>
                     </div>
-                    <p>Events in Meetup</p>
+                    <p style={{ color: 'gray' }}>Events in Meetup</p>
                 </div>
                 <div className='groups-list'>
                     {events && eventKeys.map((key) => (

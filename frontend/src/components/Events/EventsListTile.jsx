@@ -12,7 +12,6 @@ export default function EventsListTile({ events, keys }) {
     }, [dispatch])
 
     const description = events[key].description
-    console.log(events[key].EventImages[0].url)
 
     if(description) return (
         <div key={events[key].id}>

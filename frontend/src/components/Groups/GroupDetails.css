@@ -1,3 +1,4 @@
+
 .group-events-tile-container {
     display: flex;
     flex-direction: column;
@@ -7,9 +8,8 @@
 .top-body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: 10px 250px;
     justify-content: center;
-    padding: 10px 10%;
 
 }
 
@@ -28,9 +28,9 @@
 
 .top-group-container {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    gap: 40px;
     padding: 10px;
+
 }
 
 .grey-text {
@@ -52,7 +52,7 @@
 
 .bottom-body {
     background-color: #EEEEEE;
-    padding: 10px 10%;
+    padding: 10px 10px 250px 250px;
 }
 
 #join-button {

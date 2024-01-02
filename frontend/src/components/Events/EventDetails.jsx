@@ -2,7 +2,7 @@ import './EventDetails.css'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getEventById, getEvents, getEventsByGroupId } from '../../store/events'
+import { getEventById, getEvents} from '../../store/events'
 import DeleteEventConfirmModal from './DeleteEventConfirmModal'
 import OpenModalButton from '../OpenModalButton/OpenModalButton'
 
@@ -15,8 +15,9 @@ export default function EventDetails() {
     }, [dispatch])
     const events = useSelector((state) => state.events.allEvents)
     const event = events[eventId]
-    const user = useSelector((state) => state.session.user.id)
-    console.log(event)
+    const user = useSelector((state) => state.session.user)
+    let groupImgurl
+    event?.Group?.GroupImages? groupImgurl = event.Group.GroupImages[0].url : null
 
     if (event && event.Group) return (
         <div className='total-body'>
@@ -32,11 +33,11 @@ export default function EventDetails() {
             <div className='content-body2'>
                 <div className='event-container'>
                     <div className='event-img'>
-                        <img src="https://placehold.co/700x400" alt="" className='big-img' />
+                        <img src={event?.EventImages?.find((image) => image.preview === true)?.url} alt="event preview image" className='big-img' />
                     </div>
                     <div className='event-details-container'>
                         <div className='event-group-details'>
-                            <img src="https://placehold.co/100x50" alt="" style={{width: 110, height: 75}}/>
+                            <img src={groupImgurl} alt="" style={{width: 110, height: 75}}/>
                             <div>
                                 <h4>{event.Group.name}</h4>
                                 <p>{event.Group.private ? 'Private' : 'Public'}</p>
@@ -54,10 +55,6 @@ export default function EventDetails() {
                                         <p>{event.startDate.substring(0, 10)} &#183; {event.startDate.substring(11, 19)}</p>
                                         <p>{event.endDate.substring(0, 10)} &#183; {event.endDate.substring(11, 19)}</p>
                                     </div>
-                                    {/* <div className='time-container'>
-                                        <p>{event.startDate.substring(11, 19)}</p>
-                                        <p>{event.endDate.substring(11, 19)}</p>
-                                    </div> */}
                                 </div>
                                 <div className='minor-detail'>
                                     <div className='icon-detail'>
@@ -70,7 +67,7 @@ export default function EventDetails() {
                                         <i className="fa-solid fa-map-pin fa-xl" style={{ color: 'grey' }}></i>
                                         <p>{event.type}</p>
                                     </div>
-                                    {event.Group.organizerId === user && <div className='crud-event'>
+                                    {event.Group.organizerId === user?.id && <div className='crud-event'>
                                         <button className='update-event-button' onClick={() => alert('Update Feature coming soon...')}>Update</button>
                                         <OpenModalButton
                                             id='delete-event-button'

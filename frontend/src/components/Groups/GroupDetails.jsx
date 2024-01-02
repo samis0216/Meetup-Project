@@ -31,30 +31,32 @@ export default function GroupDetails() {
     const user = useSelector((state) => state.session.user)
     const numEvents = events.Events[groupId] ? events.Events[groupId].length : 0
     let group
+
     if (groups) group = groups[groupId]
+    console.log(group)
     if (Object.values(groups).length) return (
         <div className='details-main'>
-            <div className='breadcrumb-container'>
-                &lt; <Link to='/groups'>Groups</Link>
-            </div>
             <div className='top-body'>
+                <div className='breadcrumb-container'>
+                    &lt; <Link to='/groups'>Groups</Link>
+                </div>
                 <div className='top-group-container'>
-                    <img src={group.previewImage} alt="" style={{width: '400px', height: '250px'}}/>
+                    <img src={group.previewImage} alt="" style={{ width: '700px', height: '400px' }} />
                     <div className='top-group-info'>
                         <h2>{group.name}</h2>
                         <p className='grey-text'>{group.city}, {group.state}</p>
                         <p className='grey-text'>{numEvents} {numEvents > 1 ? 'events' : 'event'} &#x2022; {group.private ? 'Private' : 'Public'}</p>
-                        <p className='grey-text'>Organized by {group?.Organizer? `${group.Organizer.firstName} ${group.Organizer.lastName}` : 'firstName lastName'}</p>
+                        <p className='grey-text'>Organized by {group?.Organizer ? `${group.Organizer.firstName} ${group.Organizer.lastName}` : 'firstName lastName'}</p>
                         {user && group.organizerId === user?.id ? <div className='group-buttons-container'>
                             <button className='crud-buttons' onClick={createEventClick}>Create event</button>
                             <button className='crud-buttons' onClick={updateClick}>Update</button>
                             <OpenModalButton className='crud-buttons' buttonText="Delete" modalComponent={<GroupDeleteModal groupId={groupId} />}
-                        />
+                            />
                         </div>
-                        :
-                        <div className='group-buttons-container'>
-                            {user && <button className='crud-buttons' id='join-button' onClick={()=> {alert('Feature Coming Soon...')}}>Join this Group</button>}
-                        </div>
+                            :
+                            <div className='group-buttons-container'>
+                                {user && <button className='crud-buttons' id='join-button' onClick={() => { alert('Feature Coming Soon...') }}>Join this Group</button>}
+                            </div>
                         }
                     </div>
                 </div>
@@ -62,7 +64,7 @@ export default function GroupDetails() {
             <div className='bottom-body'>
                 <div className='organizer-container'>
                     <h3>Organizer</h3>
-                    <p className='grey-text'>{group?.Organizer? `${group.Organizer.firstName} ${group.Organizer.lastName}` : 'firstName lastName'}</p>
+                    <p className='grey-text'>{group?.Organizer ? `${group.Organizer.firstName} ${group.Organizer.lastName}` : 'firstName lastName'}</p>
                 </div>
                 <div className='details-about-container'>
                     <h4>What we're about</h4>
@@ -71,21 +73,23 @@ export default function GroupDetails() {
                 <div className='upcoming-events-container'>
                     {events.Upcoming[groupId]?.length ? (<h4>Upcoming Events ({events.Upcoming[groupId] && events.Upcoming[groupId].length})</h4>) : null}
                     <div className='group-events-tile-container'>
-                        {events.Upcoming[groupId]?.length? events.Upcoming[groupId].map((event) => (
-                            <GroupEventsTile event={event} key={event.id}/>
-                            )) : console.log('no future events')}
+                        {events.Upcoming[groupId]?.length ? events.Upcoming[groupId].map((event) => (
+                            <GroupEventsTile event={event} key={event.id} />
+                        )) : console.log('no future events')}
                     </div>
                 </div>
                 <div className='past-events-container'>
-                    {events.Past[groupId]?.length ? (<h4>Past Events ({events.Past[groupId] && events.Past[groupId].length})</h4>): null}
+                    {events.Past[groupId]?.length ? (<h4>Past Events ({events.Past[groupId] && events.Past[groupId].length})</h4>) : null}
                     <div className='group-events-tile-container'>
-                        {events.Past[groupId]?.length? events.Past[groupId].map((event) => (
-                            <GroupEventsTile event={event} key={event.id}/>
+                        {events.Past[groupId]?.length ? events.Past[groupId].map((event) => (
+                            <GroupEventsTile event={event} key={event.id} />
                         )) : console.log('no past events')}
                     </div>
                 </div>
             </div>
         </div>
     )
-    else dispatch(getGroups())
+    else {
+        dispatch(getOneGroup(groupId))
+    }
 }
