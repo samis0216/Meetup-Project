@@ -35,7 +35,7 @@ export default function EventDetails() {
             </div>
             <div className='content-body2'>
                 <div className='event-container'>
-                    <div className='event-img' style={{width:700, height:400}}>
+                    <div className='event-img' style={{width: '700px', height: '400px'}}>
                         <img src={event?.EventImages?.find((image) => image.preview === true)?.url} alt="event preview image" className='big-img' />
                     </div>
                     <div className='event-details-container'>
