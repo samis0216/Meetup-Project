@@ -22,12 +22,14 @@ function GroupDeleteModal({ groupId }) {
     }
 
     return (
-        <>
-            <h1>Confirm Delete</h1>
-            <h3>Are you sure you want to remove this group?</h3>
-            <button onClick={handleSubmit}>Yes &#40;Delete Group&#41;</button>
-            <button onClick={handleCancel}>No &#40;Keep Group&#41;</button>
-        </>
+        <div className='modal-content'>
+            <h3 id='delete-group-header' style={{fontWeight: 500}}>Confirm Delete</h3>
+            <p style={{marginTop: 0}}>Are you sure you want to remove this group?</p>
+            <div className='button-container-delete'>
+                <button className='delete-buttons' id='delete-confirm' onClick={handleSubmit}>Yes &#40;Delete Group&#41;</button>
+                <button className='delete-buttons' id='delete-cancel' onClick={handleCancel}>No &#40;Keep Group&#41;</button>
+            </div>
+        </div>
     );
 }
 
