@@ -4,6 +4,7 @@ import './CreateEventForm.css'
 import { useNavigate, useParams } from "react-router-dom";
 import { getGroups } from "../../store/groups";
 import { getEventById, getEvents, postEvent, postEventImage } from "../../store/events";
+import NewlyCreatedLoading from "./NewlyCreatedLoading";
 
 export default function CreateEventForm() {
     const [name, setName] = useState('');
@@ -97,7 +98,6 @@ export default function CreateEventForm() {
         if (!newEvent.errors) {
             const event = await dispatch(postEvent(newEvent, groupId))
             const imageShit = await dispatch(postEventImage(event.id, url))
-            console.log(event, imageShit)
             navigate(`/events/${event.id}`)
         }
     }

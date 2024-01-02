@@ -1,5 +1,5 @@
 import './EventDetails.css'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getEventById, getEvents, getEventsByGroupId } from '../../store/events'
@@ -14,13 +14,10 @@ export default function EventDetails() {
         dispatch(getEventById(eventId))
     }, [dispatch])
     const events = useSelector((state) => state.events.allEvents)
-    console.log(events)
     const event = events[eventId]
-    console.log(event)
     const user = useSelector((state) => state.session.user.id)
-    console.log(user)
 
-    if (event && event?.Group) return (
+    if (event && event.Group) return (
         <div className='total-body'>
             <div className='main-event-body'>
                 <div>

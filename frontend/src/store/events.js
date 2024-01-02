@@ -193,7 +193,7 @@ const eventsReducer = (state = initialState, action) => {
             return newState;
         }
         case POST_EVENT_IMAGE: {
-            const newState = { Past: {...state.Past}, Upcoming: {...state.Upcoming}, Events: {...state.Events}, All: {...state.allEvents}};
+            const newState = { Past: {...state.Past}, Upcoming: {...state.Upcoming}, Events: {...state.Events}, allEvents: {...state.allEvents}};
             return newState;
         }
         case DELETE_EVENT: {

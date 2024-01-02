@@ -1,5 +1,5 @@
 import './GroupForm.css'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getOneGroup, patchGroup } from '../../store/groups'
@@ -12,10 +12,8 @@ export default function GroupForm({groupId}) {
         dispatch(getOneGroup(groupId))
     }, [dispatch])
 
-    console.log(groupId)
     const group = useSelector(state => state.groups.Groups[groupId])
     const user = useSelector(state => state.session.user)
-    console.log(group)
 
     if(!group) {
         dispatch(getOneGroup(groupId))
@@ -55,7 +53,7 @@ export default function GroupForm({groupId}) {
         console.log(newGroup)
         let group = await dispatch(patchGroup(newGroup, groupId))
 
-        if (group.errors) {
+        if (group?.errors) {
             console.log(group.errors)
             setErrors(group.errors)
         }
@@ -85,7 +83,7 @@ export default function GroupForm({groupId}) {
         if (description?.length < 30) {
             newErrors.about = 'Description must be at least 30 characters long';
         }
-        if (groupName) {
+        if (!groupName) {
             newErrors.name = 'Name is required';
         }
         if (!location || location?.split(', ').length <= 1) {
@@ -98,8 +96,8 @@ export default function GroupForm({groupId}) {
     if(group) return (
         <div className='group-form-body'>
             <div>
-                <p>BECOME AN ORGANIZER</p>
-                <h4>We'll walk you through a few steps to build your local community</h4>
+                <p>UPDATE YOUR GROUPS INFORMATION</p>
+                <h4>We'll walk you through a few steps to update your group's information</h4>
             </div>
             <form onSubmit={onSubmit}>
                 <div className='form-sections'>
@@ -114,7 +112,7 @@ export default function GroupForm({groupId}) {
                     <hr />
                     <h4>What will your group's name be?</h4>
                     <p>Choose a name that will give people a clear idea of what the group is about.
-                        Feel free to get creative! You can edit this later if you change your mind.</p>
+                        Feel free to get creative!</p>
                         {submitted && <div className="errors">{errors.name}</div>}
                     <input type="text" placeholder={groupName} value={groupName} onChange={(e) => setGroupName(e.target.value)} />
                 </div>
@@ -152,7 +150,7 @@ export default function GroupForm({groupId}) {
                     <input type="text" placeholder='Image URL' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
                     <hr />
                 </div>
-                <button type='submit'>Create group</button>
+                <button type='submit'>Update group</button>
 
             </form>
         </div>
