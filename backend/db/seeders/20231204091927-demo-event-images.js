@@ -20,17 +20,17 @@ module.exports = {
     await EventImage.bulkCreate([
       {
         eventId: 1,
-        url: 'eventImage1.com',
+        url: 'https://dp4g669tqdae4.cloudfront.net/content/uploads/2021/12/83234946_2819316008111585_2463696406100049920_n.jpg',
         preview: true
       },
       {
         eventId: 2,
-        url: 'eventImage2.com',
+        url: 'https://media.timeout.com/images/104097116/image.jpg',
         preview: true
       },
       {
         eventId: 3,
-        url: 'eventImage3.com',
+        url: 'https://www.davisvanguard.org/wp-content/uploads/2021/02/hackathon.png',
         preview: true
       }
     ], {validate: true})
@@ -46,7 +46,7 @@ module.exports = {
     options.tableName = 'EventImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      url: { [Op.in]: ['eventImage1.com', 'eventImage2.com', 'eventImage3.com'] }
+      url: { [Op.in]: ['https://dp4g669tqdae4.cloudfront.net/content/uploads/2021/12/83234946_2819316008111585_2463696406100049920_n.jpg', 'https://media.timeout.com/images/104097116/image.jpg', 'https://www.davisvanguard.org/wp-content/uploads/2021/02/hackathon.png'] }
     }, {});
   }
 };

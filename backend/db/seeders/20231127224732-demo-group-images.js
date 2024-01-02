@@ -19,17 +19,17 @@ module.exports = {
     await GroupImage.bulkCreate([
       {
         groupId: 1,
-        url: "random url1",
+        url: "https://www.carlislesportsemporium.com/content/uploads/2018/02/Screen-Shot-2014-06-23-at-8.35.12-PM.png",
         preview: true
       },
       {
         groupId: 2,
-        url: "random url2",
+        url: "https://www.visartscenter.org/x/lc-content/uploads/2018/07/Team-Building_Our-Hive.jpg",
         preview: true
       },
       {
         groupId: 3,
-        url: "random url3",
+        url: "https://www.codemotion.com/magazine/wp-content/uploads/2023/07/Collaborative-Coding.-A-developer-team-working-together.-min-896x504.jpg",
         preview: true
       }
     ], { validate: true })
